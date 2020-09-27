@@ -12,6 +12,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.HorizontalGradient
 import androidx.compose.ui.unit.dp
+import androidx.ui.tooling.preview.Preview
 import com.david.voicememos.macaw.ui.red500
 import com.david.voicememos.macaw.ui.red800
 

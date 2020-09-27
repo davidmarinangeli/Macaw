@@ -1,9 +1,12 @@
 package com.david.voicememos.macaw
 
 import android.Manifest
+import android.content.Context
 import android.media.MediaRecorder
 import android.os.Bundle
+import android.util.AttributeSet
 import android.util.Log
+import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +19,7 @@ import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -23,22 +27,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat
+import androidx.lifecycle.ViewModel
 import androidx.ui.tooling.preview.Preview
+import com.david.voicememos.macaw.entities.Recording
 import com.david.voicememos.macaw.ui.MacawTheme
 import com.david.voicememos.macaw.ui.components.RecordButton
+import com.david.voicememos.macaw.ui.components.RecordingCard
+import java.io.File
 import java.io.IOException
+import java.time.LocalDateTime
+import java.util.*
 
 private const val LOG_TAG = "AudioRecordTest"
 private var recorder: MediaRecorder? = null
-private var fileName: String = ""
 
 class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        fileName = "${externalCacheDir?.absolutePath}/audiorecordtest.3gp"
         val homeViewModel by viewModels<HomeViewModel>()
+
         setContent {
             MacawTheme {
                 Surface(color = MaterialTheme.colors.background) {
@@ -49,7 +59,10 @@ class HomeActivity : AppCompatActivity() {
     }
 }
 
-private fun startRecording() {
+private fun startRecording(activity: HomeActivity) {
+    val fileName =
+        "${activity.externalCacheDir?.absolutePath}/${Calendar.getInstance().timeInMillis}.mp4"
+
     recorder = MediaRecorder().apply {
         setAudioSource(MediaRecorder.AudioSource.MIC)
         setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
@@ -59,7 +72,7 @@ private fun startRecording() {
         try {
             prepare()
         } catch (e: IOException) {
-            Log.e(LOG_TAG, "prepare() failed")
+            Log.e(LOG_TAG, "prepare() failed $e")
         }
 
         start()
@@ -76,52 +89,47 @@ private fun stopRecording() {
 }
 
 
-fun onRecord(start: Boolean) = if (start) {
-    startRecording()
+fun onRecord(homeViewModel: HomeViewModel, activity: HomeActivity, start: Boolean) = if (start) {
+    startRecording(activity)
 } else {
     stopRecording()
+    homeViewModel.readRecordings(activity)
 }
 
 @Composable
 fun HomeScreen(homeViewModel: HomeViewModel, activity: HomeActivity) {
-    val recordingList: List<String> = homeViewModel.recordings
-    val startRecording = remember { mutableStateOf(true) }
 
+    homeViewModel.readRecordings(activity)
+    val recordingList: List<Recording> = homeViewModel.recordings
+    val startRecording = remember { mutableStateOf(true) }
     Column(
-        modifier = Modifier.padding(16.dp).fillMaxWidth()
+        modifier = Modifier.padding(top = 16.dp).fillMaxWidth()
     ) {
         LazyColumnFor(
             items = recordingList,
             modifier = Modifier.weight(1f),
             itemContent = { item ->
-                Text(
-                    text = item,
-                    modifier = Modifier.fillMaxWidth(),
-                    color = Color.Red
-                )
+                RecordingCard(item)
             })
-        Row(modifier = Modifier.align(Alignment.CenterHorizontally).padding(16.dp)) {
-            RecordButton(onClickListener = {
+    }
+}
 
-                activity.registerForActivityResult(
-                    ActivityResultContracts.RequestPermission()
-                ) { isGranted: Boolean ->
-                    if (isGranted) {
-                        homeViewModel.addRecording("hi")
-                        onRecord(startRecording.value)
-                        startRecording.value = !startRecording.value
-                    } else {
-                        // Explain to the user that the feature is unavailable because the
-                        // features requires a permission that the user has denied. At the
-                        // same time, respect the user's decision. Don't link to system
-                        // settings in an effort to convince the user to change their
-                        // decision.
-                    }
-                }.launch(Manifest.permission.RECORD_AUDIO)
+@Composable
+private fun onRecordPressed(
+    activity: HomeActivity,
+    homeViewModel: HomeViewModel,
+    startRecording: MutableState<Boolean>
+): () -> Unit {
+    return {
+        activity.registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                onRecord(homeViewModel, activity, startRecording.value)
+                startRecording.value = !startRecording.value
+            }
+        }.launch(Manifest.permission.RECORD_AUDIO)
 
-
-            })
-        }
 
     }
 }
