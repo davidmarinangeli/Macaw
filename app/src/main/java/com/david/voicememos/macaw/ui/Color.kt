@@ -2,9 +2,11 @@ package com.david.voicememos.macaw.ui
 
 import androidx.compose.ui.graphics.Color
 
-val purple200 = Color(0xFFBB86FC)
-val purple500 = Color(0xFF6200EE)
-val purple700 = Color(0xFF3700B3)
-val teal200 = Color(0xFF03DAC5)
-val red800 = Color(0xFFc62828)
-val red500 = Color(0xFFf44336)
+val blue200 = Color(0xFF8CBCE3)
+val blue500 = Color(0xFF3B8CCF)
+val blue700 = Color(0xFF2E5CBF)
+val green200 = Color(0xFF65E2B0)
+val green500 = Color(0xFF26C485)
+val green700 = Color(0xFF285943)
+val red800 = Color(0xFFA72541)
+val red500 = Color(0xFFCE2D4F)

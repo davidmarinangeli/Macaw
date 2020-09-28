@@ -33,7 +33,7 @@ fun RecordingCard(
             ) {
                 Text(text = recording.dayAndTime, style = typography.h6)
                 Image(
-                    colorFilter = ColorFilter.tint(red800),
+                    colorFilter = ColorFilter.tint(colors.primary),
                     asset = vectorResource(id = R.drawable.ic_baseline_play_arrow_24),
                     modifier = Modifier.preferredWidth(32.dp).align(Alignment.CenterVertically),
                     contentScale = ContentScale.FillWidth
