@@ -9,9 +9,6 @@ import androidx.compose.runtime.savedinstancestate.listSaver
 import androidx.compose.runtime.staticAmbientOf
 import androidx.compose.runtime.toMutableStateList
 
-/**
- * A simple navigator which maintains a back stack.
- */
 class Navigator<T : Parcelable> private constructor(
     initialBackStack: List<T>,
     backDispatcher: OnBackPressedDispatcher
@@ -52,34 +49,6 @@ class Navigator<T : Parcelable> private constructor(
                 save = { navigator -> navigator.backStack.toList() },
                 restore = { backstack -> Navigator(backstack, backDispatcher) }
             )
-    }
-}
-
-/**
- * An effect for handling presses of the device back button.
- */
-@Composable
-fun backHandler(
-    enabled: Boolean = true,
-    onBack: () -> Unit
-) {
-    val backCallback = remember(onBack) {
-        object : OnBackPressedCallback(enabled) {
-            override fun handleOnBackPressed() {
-                onBack()
-            }
-        }
-    }
-    onCommit(enabled) {
-        backCallback.isEnabled = enabled
-    }
-
-    val dispatcher = BackDispatcherAmbient.current
-    onCommit(backCallback) {
-        dispatcher.addCallback(backCallback)
-        onDispose {
-            backCallback.remove()
-        }
     }
 }
 

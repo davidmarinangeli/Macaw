@@ -1,4 +1,4 @@
-package com.david.voicememos.macaw.ui
+package com.david.voicememos.macaw.ui.composebase
 
 import androidx.compose.ui.graphics.Color
 

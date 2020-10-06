@@ -3,7 +3,9 @@ package com.david.voicememos.macaw.ui.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.MaterialTheme.colors
@@ -16,16 +18,22 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.david.voicememos.macaw.R
 import com.david.voicememos.macaw.entities.Recording
-import com.david.voicememos.macaw.ui.red800
-import com.david.voicememos.macaw.ui.shapes
-import com.david.voicememos.macaw.ui.typography
+import com.david.voicememos.macaw.ui.composebase.shapes
+import com.david.voicememos.macaw.ui.composebase.typography
 
 @Composable
 fun RecordingCard(
-    recording: Recording
+    recording: Recording,
+    onClickListener: () -> Unit
 ) {
-
-    Card(Modifier.background(colors.surface, shapes.medium).fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)) {
+    Card(
+        modifier = Modifier.background(
+            color = colors.surface,
+            RoundedCornerShape(shapes.medium.bottomRight)
+        ).fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp).clickable(onClick = onClickListener),
+        shape = RoundedCornerShape(shapes.medium.bottomRight),
+    ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,

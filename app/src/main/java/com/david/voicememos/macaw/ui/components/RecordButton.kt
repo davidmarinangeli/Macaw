@@ -3,7 +3,6 @@ package com.david.voicememos.macaw.ui.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope.align
 import androidx.compose.foundation.layout.preferredWidth
 import androidx.compose.foundation.layout.size
@@ -19,10 +18,9 @@ import androidx.compose.ui.graphics.HorizontalGradient
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import androidx.ui.tooling.preview.Preview
 import com.david.voicememos.macaw.R
-import com.david.voicememos.macaw.ui.red500
-import com.david.voicememos.macaw.ui.red800
+import com.david.voicememos.macaw.ui.composebase.red500
+import com.david.voicememos.macaw.ui.composebase.red800
 
 @Composable
 fun RecordButton(layoutModifier: Modifier, isRecordingIdle: Boolean, onClickListener: () -> Unit) {
