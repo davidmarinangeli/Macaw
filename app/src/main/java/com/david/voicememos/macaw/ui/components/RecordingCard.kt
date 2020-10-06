@@ -31,7 +31,8 @@ fun RecordingCard(
             color = colors.surface,
             RoundedCornerShape(shapes.medium.bottomRight)
         ).fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp).clickable(onClick = onClickListener),
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .clickable(onClick = onClickListener),
         shape = RoundedCornerShape(shapes.medium.bottomRight),
     ) {
         Column(modifier = Modifier.padding(16.dp)) {

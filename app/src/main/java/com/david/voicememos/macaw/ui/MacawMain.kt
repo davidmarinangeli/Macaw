@@ -4,8 +4,10 @@ import androidx.activity.OnBackPressedDispatcher
 import androidx.compose.animation.Crossfade
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Providers
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.savedinstancestate.rememberSavedInstanceState
+import com.david.voicememos.macaw.entities.Recording
 import com.david.voicememos.macaw.ui.home.HomeActivity
 import com.david.voicememos.macaw.ui.home.HomeScreen
 import com.david.voicememos.macaw.ui.home.HomeViewModel
@@ -31,10 +33,14 @@ fun MacawMain(
             Crossfade(navigator.current) { destination ->
                 when (destination) {
                     is Destination.Home -> {
+                        homeViewModel.readRecordings(activity.externalCacheDir?.absolutePath)
+                        val recordingList: List<Recording> =
+                            homeViewModel.recordings.observeAsState().value ?: listOf()
                         HomeScreen(
                             homeViewModel = homeViewModel,
                             activity = activity,
-                            actions = actions
+                            onClick = actions.recordingDetails,
+                            recordingList = recordingList
                         )
                     }
                     is Destination.RecordingDetails -> {

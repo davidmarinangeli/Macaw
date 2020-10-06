@@ -19,13 +19,17 @@ private var recorder: MediaRecorder? = null
 
 class HomeActivity : AppCompatActivity() {
 
+    private val homeViewModel by viewModels<HomeViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val homeViewModel by viewModels<HomeViewModel>()
-
         setContent {
-            MacawMain(homeViewModel, this, onBackPressedDispatcher)
+            MacawTheme {
+                Surface(color = MaterialTheme.colors.background) {
+                    MacawMain(homeViewModel, this, onBackPressedDispatcher)
+                }
+            }
         }
     }
 }

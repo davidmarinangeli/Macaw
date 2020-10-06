@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -25,10 +26,10 @@ import com.david.voicememos.macaw.ui.navigation.Actions
 fun HomeScreen(
     homeViewModel: HomeViewModel,
     activity: HomeActivity,
-    actions: Actions
+    recordingList: List<Recording>,
+    onClick: () -> Unit
 ) {
-    homeViewModel.readRecordings(activity)
-    val recordingList: List<Recording> = homeViewModel.recordings
+
     val isRecordingIdle = remember { mutableStateOf(true) }
     Stack(
         modifier = Modifier.padding(top = 16.dp).fillMaxWidth()
@@ -40,9 +41,7 @@ fun HomeScreen(
                 if (item == recordingList.last()) {
                     Box(Modifier.height(80.dp))
                 } else {
-                    RecordingCard(item, onClickListener = {
-                        actions.recordingDetails
-                    })
+                    RecordingCard(item, onClickListener = onClick)
                 }
             })
         RecordButton(
@@ -71,7 +70,7 @@ private fun onRecordPressed(
                     startRecording(activity)
                 } else {
                     stopRecording()
-                    homeViewModel.readRecordings(activity)
+                    homeViewModel.readRecordings(activity.externalCacheDir?.absolutePath)
                 }
                 startRecording.value = !startRecording.value
             }
