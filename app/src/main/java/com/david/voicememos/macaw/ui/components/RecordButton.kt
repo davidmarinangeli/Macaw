@@ -20,13 +20,14 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.david.voicememos.macaw.R
 import com.david.voicememos.macaw.ui.composebase.red500
+import com.david.voicememos.macaw.ui.composebase.red700
 import com.david.voicememos.macaw.ui.composebase.red800
 
 @Composable
 fun RecordButton(layoutModifier: Modifier, isRecordingIdle: Boolean, onClickListener: () -> Unit) {
     val gradientBackground = HorizontalGradient(
         0.0f to red800,
-        1.0f to red500,
+        1.0f to red700,
         startX = 0f,
         endX = 128f
     )

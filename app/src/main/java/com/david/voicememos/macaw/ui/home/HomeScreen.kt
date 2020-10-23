@@ -3,24 +3,25 @@ package com.david.voicememos.macaw.ui.home
 import android.Manifest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Box
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.Text
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.ColumnScope.weight
-import androidx.compose.foundation.layout.Stack
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumnFor
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import com.david.voicememos.macaw.R
 import com.david.voicememos.macaw.entities.Recording
 import com.david.voicememos.macaw.ui.components.RecordButton
 import com.david.voicememos.macaw.ui.components.RecordingCard
-import com.david.voicememos.macaw.ui.navigation.Actions
 
 @Composable
 fun HomeScreen(
@@ -32,18 +33,36 @@ fun HomeScreen(
 
     val isRecordingIdle = remember { mutableStateOf(true) }
     Stack(
-        modifier = Modifier.padding(top = 16.dp).fillMaxWidth()
+        modifier = Modifier.padding(top = 16.dp).fillMaxWidth().fillMaxHeight()
     ) {
-        LazyColumnFor(
-            items = recordingList,
-            modifier = Modifier.weight(1f),
-            itemContent = { item ->
-                if (item == recordingList.last()) {
-                    Box(Modifier.height(80.dp))
-                } else {
-                    RecordingCard(item, onClickListener = onClick)
-                }
-            })
+        if(recordingList.isEmpty()){
+            Column(modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally) {
+                Image(
+                    asset = vectorResource(id = R.drawable.ic_no_results),
+                    modifier = Modifier.padding(horizontal = 32.dp),
+                    contentScale = ContentScale.FillWidth
+                )
+                Text(
+                    text = "No results found",
+                    style = MaterialTheme.typography.body1,
+                    color = MaterialTheme.colors.onSurface,
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
+            }
+        } else {
+            LazyColumnFor(
+                items = recordingList,
+                modifier = Modifier.weight(1f),
+                itemContent = { item ->
+                    if (item == recordingList.last()) {
+                        Box(Modifier.height(80.dp))
+                    } else {
+                        RecordingCard(item, onClickListener = onClick)
+                    }
+                })
+        }
         RecordButton(
             layoutModifier = Modifier.padding(16.dp).align(Alignment.BottomCenter),
             isRecordingIdle = isRecordingIdle.value,
