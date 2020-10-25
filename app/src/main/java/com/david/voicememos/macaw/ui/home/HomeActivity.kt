@@ -37,8 +37,8 @@ class HomeActivity : AppCompatActivity() {
 fun startRecording(activity: HomeActivity) {
 
     val fileName =
-        "${activity.externalCacheDir?.absolutePath}/MacawRecording-${
-            SimpleDateFormat("ddMMyyyy", Locale.getDefault()).format(
+        "${activity.externalCacheDir?.absolutePath}/Macaw-${
+            SimpleDateFormat("ddMMyyyy-HHmmss", Locale.getDefault()).format(
                 Calendar.getInstance().time
             )
         }.mp4"

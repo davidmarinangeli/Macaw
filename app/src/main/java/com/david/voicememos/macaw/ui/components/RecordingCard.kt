@@ -34,6 +34,7 @@ fun RecordingCard(
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .clickable(onClick = onClickListener),
         shape = RoundedCornerShape(shapes.medium.bottomRight),
+        elevation = 2.dp
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(

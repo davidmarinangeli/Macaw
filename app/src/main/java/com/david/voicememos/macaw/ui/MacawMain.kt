@@ -40,7 +40,7 @@ fun MacawMain(
                             homeViewModel = homeViewModel,
                             activity = activity,
                             onClick = actions.recordingDetails,
-                            recordingList = recordingList
+                            recordingList = recordingList.toMutableList()
                         )
                     }
                     is Destination.RecordingDetails -> {

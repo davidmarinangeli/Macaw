@@ -10,7 +10,7 @@ private val DarkColorPalette = darkColors(
     primary = blue500,
     primaryVariant = blue700,
     secondary = green200,
-    error = red500
+    error = red500,
 )
 
 private val LightColorPalette = lightColors(
