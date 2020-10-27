@@ -9,9 +9,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.MaterialTheme.colors
+import androidx.compose.material.MaterialTheme.shapes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.vectorResource
@@ -27,13 +29,12 @@ fun RecordingCard(
     onClickListener: () -> Unit
 ) {
     Card(
-        modifier = Modifier.background(
-            color = colors.surface,
-            RoundedCornerShape(shapes.medium.bottomRight)
-        ).fillMaxWidth()
+        backgroundColor = colors.surface,
+        modifier = Modifier
+            .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
+            .clip(MaterialTheme.shapes.medium)
             .clickable(onClick = onClickListener),
-        shape = RoundedCornerShape(shapes.medium.bottomRight),
         elevation = 2.dp
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -41,7 +42,7 @@ fun RecordingCard(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = recording.dayAndTime, style = typography.h6)
+                Text(text = recording.dayAndTime, style = MaterialTheme.typography.h6)
                 Image(
                     colorFilter = ColorFilter.tint(colors.primary),
                     asset = vectorResource(id = R.drawable.ic_baseline_play_arrow_24),

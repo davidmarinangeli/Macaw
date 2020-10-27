@@ -55,7 +55,7 @@ fun HomeScreen(
                 Text(
                     text = "No results found",
                     style = MaterialTheme.typography.body1,
-                    color = MaterialTheme.colors.onSurface,
+                    color = colors.onSurface,
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
             }
@@ -86,8 +86,8 @@ fun HomeScreen(
                                         modifier = Modifier.align(Alignment.BottomStart)
                                             .padding(start = 32.dp, bottom = 48.dp)
                                     ) {
-                                        Text(text = "Hey,", style = typography.h5, color = colors.surface)
-                                        Text(text = "David", style = typography.h2, color = colors.surface)
+                                        Text(text = "Hey,", style = MaterialTheme.typography.h5, color = MaterialTheme.colors.surface)
+                                        Text(text = "David", style = MaterialTheme.typography.h2, color = colors.surface)
                                     }
                                 }
                             }

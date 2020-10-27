@@ -31,13 +31,12 @@ fun RecordButton(layoutModifier: Modifier, isRecordingIdle: Boolean, onClickList
         startX = 0f,
         endX = 128f
     )
-    val componentModifier = layoutModifier.then(
-        Modifier
-            .size(64.dp)
+    val componentModifier = layoutModifier.also {
+        it.size(64.dp)
             .clip(CircleShape)
             .background(brush = gradientBackground)
             .clickable(onClick = onClickListener)
-    )
+    }
 
     Surface(color = Color.Transparent, modifier = componentModifier) {
         if (!isRecordingIdle) {
