@@ -22,11 +22,11 @@ import com.david.voicememos.macaw.R
 
 @Composable
 fun PlayButton(
-    modifier: Modifier
+    modifier: Modifier?
 ) {
 
     Button(
-        modifier = modifier,
+        modifier = modifier ?: Modifier,
         backgroundColor = colors.primary,
         shape = shapes.small,
         elevation = 1.dp,
@@ -43,7 +43,7 @@ fun PlayButton(
                 contentScale = ContentScale.FillWidth
             )
             Text(
-                "Button",
+                "Play",
                 color = Color.White,
                 style = typography.button,
                 modifier = Modifier.padding(start = 8.dp)

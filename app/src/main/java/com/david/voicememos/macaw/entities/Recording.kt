@@ -3,7 +3,6 @@ package com.david.voicememos.macaw.entities
 import android.media.MediaMetadataRetriever
 import java.io.File
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -25,9 +24,11 @@ fun convertFilesToRecordings(file: List<File>): List<Recording> {
         mmr.setDataSource(it.path)
         val duration = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION).toLong()
 
-        val timeDuration = String.format("%02d:%02d",
+        val timeDuration = String.format(
+            "%02d:%02d",
             TimeUnit.MILLISECONDS.toMinutes(duration),
-            TimeUnit.MILLISECONDS.toSeconds(duration))
+            TimeUnit.MILLISECONDS.toSeconds(duration)
+        )
 
         return@map Recording(
             date = "${calendar.get(Calendar.DAY_OF_MONTH)} ${
@@ -49,4 +50,12 @@ fun convertFilesToRecordings(file: List<File>): List<Recording> {
 
     mmr.release()
     return recordingList
+}
+
+fun generateRecordingName(path: String?): String {
+    return "${path}/Macaw-${
+        SimpleDateFormat("ddMMyyyy-HHmmss", Locale.getDefault()).format(
+            Calendar.getInstance().time
+        )
+    }.mp4"
 }

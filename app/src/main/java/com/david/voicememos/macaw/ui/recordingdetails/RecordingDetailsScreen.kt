@@ -12,8 +12,11 @@ import androidx.compose.foundation.Text
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.RowScope.align
+import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
 import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -37,7 +40,7 @@ import com.david.voicememos.macaw.ui.composebase.*
 @Preview(showBackground = true)
 @Composable
 fun RecordingDetailsScreen() {
-    Stack(modifier = Modifier.fillMaxHeight().fillMaxWidth()){
+    Stack(modifier = Modifier.fillMaxHeight().fillMaxWidth()) {
         Column {
             Stack {
                 Box(
@@ -58,7 +61,7 @@ fun RecordingDetailsScreen() {
                 modifier = Modifier.padding(top = 16.dp, end = 16.dp, start = 16.dp)
             )
             Card(
-                shape = RoundedCornerShape(shapes.large.bottomRight),
+                shape = RoundedCornerShape(MaterialTheme.shapes.medium.topLeft),
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp).background(
                     colors.surface
                 ).fillMaxWidth()
@@ -85,7 +88,32 @@ fun RecordingDetailsScreen() {
                     )
                 }
             }
+            Text(
+                "Word Standings",
+                style = typography.h5,
+                modifier = Modifier.padding(top = 8.dp, end = 16.dp, start = 16.dp)
+            )
+            Card(
+                shape = RoundedCornerShape(MaterialTheme.shapes.medium.topLeft),
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp).background(
+                    colors.surface
+                ).fillMaxWidth()
+            ) {}
         }
-        PlayButton(modifier = Modifier.align(Alignment.BottomCenter).padding(16.dp).fillMaxWidth())
+        Row(modifier = Modifier.align(Alignment.BottomCenter).padding(16.dp)) {
+            Button(
+                onClick = {},
+                shape = MaterialTheme.shapes.small,
+                modifier = Modifier.weight(2.0f, true).padding(end = 8.dp),
+                backgroundColor = colors.primary
+            )
+            {
+                Image(
+                    asset = vectorResource(id = R.drawable.ic_baseline_share_24),
+                    modifier = Modifier.preferredWidth(32.dp).padding(vertical = 8.dp)
+                )
+            }
+            PlayButton(Modifier.weight(9.0f, true))
+        }
     }
 }

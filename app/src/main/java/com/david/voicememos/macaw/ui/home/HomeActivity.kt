@@ -2,6 +2,8 @@ package com.david.voicememos.macaw.ui.home
 
 import android.media.MediaRecorder
 import android.os.Bundle
+import android.speech.RecognitionListener
+import android.speech.SpeechRecognizer
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -14,12 +16,12 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-private const val LOG_TAG = "AudioRecordTest"
-private var recorder: MediaRecorder? = null
 
-class HomeActivity : AppCompatActivity() {
+
+class HomeActivity : AppCompatActivity(), RecognitionListener {
 
     private val homeViewModel by viewModels<HomeViewModel>()
+    private lateinit var speech: SpeechRecognizer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,38 +34,40 @@ class HomeActivity : AppCompatActivity() {
             }
         }
     }
-}
 
-fun startRecording(activity: HomeActivity) {
-
-    val fileName =
-        "${activity.externalCacheDir?.absolutePath}/Macaw-${
-            SimpleDateFormat("ddMMyyyy-HHmmss", Locale.getDefault()).format(
-                Calendar.getInstance().time
-            )
-        }.mp4"
-
-    recorder = MediaRecorder().apply {
-        setAudioSource(MediaRecorder.AudioSource.MIC)
-        setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-        setOutputFile(fileName)
-        setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
-
-        try {
-            prepare()
-        } catch (e: IOException) {
-            Log.e(LOG_TAG, "prepare() failed $e")
-        }
-
-        start()
+    override fun onReadyForSpeech(p0: Bundle?) {
+        TODO("Not yet implemented")
     }
-}
 
-fun stopRecording() {
-    recorder?.apply {
-        stop()
-        reset()
-        release()
+    override fun onBeginningOfSpeech() {
+        TODO("Not yet implemented")
     }
-    recorder = null
+
+    override fun onRmsChanged(p0: Float) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onBufferReceived(p0: ByteArray?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onEndOfSpeech() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onError(p0: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onResults(p0: Bundle?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onPartialResults(p0: Bundle?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onEvent(p0: Int, p1: Bundle?) {
+        TODO("Not yet implemented")
+    }
 }

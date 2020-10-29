@@ -6,7 +6,6 @@ import androidx.compose.foundation.Box
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.ColumnScope.weight
 import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
@@ -24,10 +23,11 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.david.voicememos.macaw.R
 import com.david.voicememos.macaw.entities.Recording
+import com.david.voicememos.macaw.entities.generateRecordingName
 import com.david.voicememos.macaw.ui.components.RecordButton
 import com.david.voicememos.macaw.ui.components.RecordingCard
-import com.david.voicememos.macaw.ui.composebase.shapes
-import com.david.voicememos.macaw.ui.composebase.typography
+
+private const val LOG_TAG = "AudioRecordTest"
 
 @Composable
 fun HomeScreen(
@@ -36,7 +36,6 @@ fun HomeScreen(
     recordingList: MutableList<Recording>,
     onClick: () -> Unit
 ) {
-
     val isRecordingIdle = remember { mutableStateOf(true) }
     Stack(
         modifier = Modifier.fillMaxWidth().fillMaxHeight()
@@ -86,8 +85,16 @@ fun HomeScreen(
                                         modifier = Modifier.align(Alignment.BottomStart)
                                             .padding(start = 32.dp, bottom = 48.dp)
                                     ) {
-                                        Text(text = "Hey,", style = MaterialTheme.typography.h5, color = MaterialTheme.colors.surface)
-                                        Text(text = "David", style = MaterialTheme.typography.h2, color = colors.surface)
+                                        Text(
+                                            text = "Hey,",
+                                            style = MaterialTheme.typography.h5,
+                                            color = colors.surface
+                                        )
+                                        Text(
+                                            text = "David",
+                                            style = MaterialTheme.typography.h2,
+                                            color = colors.surface
+                                        )
                                     }
                                 }
                             }
@@ -121,9 +128,10 @@ private fun onRecordPressed(
         ) { isGranted: Boolean ->
             if (isGranted) {
                 if (startRecording.value) {
-                    startRecording(activity)
+                    val fileName = generateRecordingName(activity.externalCacheDir?.absolutePath)
+                    homeViewModel.startRecording(fileName)
                 } else {
-                    stopRecording()
+                    homeViewModel.stopRecording()
                     homeViewModel.readRecordings(activity.externalCacheDir?.absolutePath)
                 }
                 startRecording.value = !startRecording.value
