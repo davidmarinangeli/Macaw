@@ -2,11 +2,13 @@ package com.david.voicememos.macaw.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.Text
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.ColumnScope.align
-import androidx.compose.foundation.layout.RowScope.align
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.preferredWidth
 import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme.colors
+import androidx.compose.material.ButtonConstants
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme.shapes
 import androidx.compose.material.MaterialTheme.typography
 import androidx.compose.runtime.Composable
@@ -17,9 +19,9 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import androidx.ui.tooling.preview.Preview
 import com.david.voicememos.macaw.R
 
+@ExperimentalMaterialApi
 @Composable
 fun PlayButton(
     modifier: Modifier?
@@ -27,9 +29,9 @@ fun PlayButton(
 
     Button(
         modifier = modifier ?: Modifier,
-        backgroundColor = colors.primary,
+        colors = ButtonConstants.defaultButtonColors(),
         shape = shapes.small,
-        elevation = 1.dp,
+        elevation = ButtonConstants.defaultElevation(defaultElevation = 1.dp),
         onClick = {}) {
         Row(
             modifier = Modifier.padding(8.dp),

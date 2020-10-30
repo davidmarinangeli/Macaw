@@ -3,7 +3,6 @@ package com.david.voicememos.macaw.ui.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.RowScope.align
 import androidx.compose.foundation.layout.preferredWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -19,7 +18,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.david.voicememos.macaw.R
-import com.david.voicememos.macaw.ui.composebase.red500
 import com.david.voicememos.macaw.ui.composebase.red700
 import com.david.voicememos.macaw.ui.composebase.red800
 
@@ -31,8 +29,9 @@ fun RecordButton(layoutModifier: Modifier, isRecordingIdle: Boolean, onClickList
         startX = 0f,
         endX = 128f
     )
-    val componentModifier = layoutModifier.also {
-        it.size(64.dp)
+    val componentModifier = layoutModifier.run {
+        this
+            .size(64.dp)
             .clip(CircleShape)
             .background(brush = gradientBackground)
             .clickable(onClick = onClickListener)
@@ -43,7 +42,8 @@ fun RecordButton(layoutModifier: Modifier, isRecordingIdle: Boolean, onClickList
             Image(
                 colorFilter = ColorFilter.tint(Color.White),
                 asset = vectorResource(id = R.drawable.ic_baseline_stop_24),
-                modifier = Modifier.preferredWidth(42.dp).align(Alignment.CenterVertically),
+                alignment = Alignment.Center,
+                modifier = Modifier.preferredWidth(42.dp),
                 contentScale = ContentScale.FillWidth
             )
         }

@@ -2,6 +2,7 @@ package com.david.voicememos.macaw.ui
 
 import androidx.activity.OnBackPressedDispatcher
 import androidx.compose.animation.Crossfade
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Providers
 import androidx.compose.runtime.livedata.observeAsState
@@ -15,6 +16,7 @@ import com.david.voicememos.macaw.ui.navigation.*
 import com.david.voicememos.macaw.ui.navigation.BackDispatcherAmbient
 import com.david.voicememos.macaw.ui.recordingdetails.RecordingDetailsScreen
 
+@ExperimentalMaterialApi
 @Composable
 fun MacawMain(
     homeViewModel: HomeViewModel,

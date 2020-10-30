@@ -1,13 +1,15 @@
 package com.david.voicememos.macaw.ui.home
 
 import android.Manifest
+import android.content.Intent
+import android.speech.RecognizerIntent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Box
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.runtime.Composable
@@ -18,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.david.voicememos.macaw.R
@@ -26,9 +27,9 @@ import com.david.voicememos.macaw.entities.Recording
 import com.david.voicememos.macaw.entities.generateRecordingName
 import com.david.voicememos.macaw.ui.components.RecordButton
 import com.david.voicememos.macaw.ui.components.RecordingCard
+import java.util.*
 
-private const val LOG_TAG = "AudioRecordTest"
-
+@ExperimentalMaterialApi
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel,
@@ -37,7 +38,10 @@ fun HomeScreen(
     onClick: () -> Unit
 ) {
     val isRecordingIdle = remember { mutableStateOf(true) }
-    Stack(
+    if (recordingList.isNotEmpty()) {
+        remember { recordingList.add(0, Recording("", "", "")) }
+    }
+    Box(
         modifier = Modifier.fillMaxWidth().fillMaxHeight()
     ) {
         if (recordingList.isEmpty()) {
@@ -59,7 +63,6 @@ fun HomeScreen(
                 )
             }
         } else {
-            recordingList.add(0, Recording("", "", ""))
             Column {
                 LazyColumnFor(
                     items = recordingList,
@@ -70,9 +73,9 @@ fun HomeScreen(
                                 Box(Modifier.height(80.dp))
                             }
                             recordingList.first() -> {
-                                Stack {
+                                Box {
                                     Image(
-                                        asset = imageResource(id = R.drawable.parrot_background),
+                                        asset = vectorResource(id = R.drawable.homescreen_background),
                                         modifier = Modifier.padding(bottom = 16.dp).clip(
                                             shape = RoundedCornerShape(
                                                 bottomRight = 32.dp,
@@ -117,6 +120,7 @@ fun HomeScreen(
     }
 }
 
+@ExperimentalMaterialApi
 private fun onRecordPressed(
     activity: HomeActivity,
     homeViewModel: HomeViewModel,
@@ -130,6 +134,7 @@ private fun onRecordPressed(
                 if (startRecording.value) {
                     val fileName = generateRecordingName(activity.externalCacheDir?.absolutePath)
                     homeViewModel.startRecording(fileName)
+                    activateSpeechToTextListener(activity)
                 } else {
                     homeViewModel.stopRecording()
                     homeViewModel.readRecordings(activity.externalCacheDir?.absolutePath)
@@ -138,4 +143,15 @@ private fun onRecordPressed(
             }
         }.launch(Manifest.permission.RECORD_AUDIO)
     }
+}
+
+@ExperimentalMaterialApi
+private fun activateSpeechToTextListener(activity: HomeActivity) {
+    val speechRecognizerIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+    speechRecognizerIntent.putExtra(
+        RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+        RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+    )
+    speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+    activity.speechRecognizer.startListening(speechRecognizerIntent)
 }
