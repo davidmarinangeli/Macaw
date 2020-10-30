@@ -2,7 +2,10 @@ package com.david.voicememos.macaw.ui.home
 
 import android.Manifest
 import android.content.Intent
+import android.os.Bundle
+import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
+import android.speech.SpeechRecognizer
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.Text
@@ -134,7 +137,7 @@ private fun onRecordPressed(
                 if (startRecording.value) {
                     val fileName = generateRecordingName(activity.externalCacheDir?.absolutePath)
                     homeViewModel.startRecording(fileName)
-                    activateSpeechToTextListener(activity)
+                    start(activity)
                 } else {
                     homeViewModel.stopRecording()
                     homeViewModel.readRecordings(activity.externalCacheDir?.absolutePath)
@@ -145,13 +148,48 @@ private fun onRecordPressed(
     }
 }
 
+
 @ExperimentalMaterialApi
-private fun activateSpeechToTextListener(activity: HomeActivity) {
+fun start(activity: HomeActivity) {
+
+    val speechRecognizer = SpeechRecognizer.createSpeechRecognizer(activity.applicationContext)
+
     val speechRecognizerIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
     speechRecognizerIntent.putExtra(
         RecognizerIntent.EXTRA_LANGUAGE_MODEL,
         RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
     )
     speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
-    activity.speechRecognizer.startListening(speechRecognizerIntent)
+
+    speechRecognizer.setRecognitionListener(object : RecognitionListener {
+        override fun onReadyForSpeech(p0: Bundle?) {
+
+        }
+
+        override fun onBeginningOfSpeech() {
+        }
+
+        override fun onRmsChanged(p0: Float) {
+        }
+
+        override fun onBufferReceived(p0: ByteArray?) {
+        }
+
+        override fun onEndOfSpeech() {
+        }
+
+        override fun onError(p0: Int) {
+        }
+
+        override fun onResults(p0: Bundle?) {
+        }
+
+        override fun onPartialResults(p0: Bundle?) {
+        }
+
+        override fun onEvent(p0: Int, p1: Bundle?) {
+        }
+    })
+
+    speechRecognizer.startListening(speechRecognizerIntent)
 }
