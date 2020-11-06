@@ -22,7 +22,7 @@ class HomeActivity : AppCompatActivity() {
         setContent {
             MacawTheme {
                 Surface(color = MaterialTheme.colors.background) {
-                    MacawMain(homeViewModel, this, onBackPressedDispatcher)
+                    MacawMain(homeViewModel, this)
                 }
             }
         }

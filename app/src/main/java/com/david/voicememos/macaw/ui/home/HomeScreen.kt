@@ -1,11 +1,6 @@
 package com.david.voicememos.macaw.ui.home
 
 import android.Manifest
-import android.content.Intent
-import android.os.Bundle
-import android.speech.RecognitionListener
-import android.speech.RecognizerIntent
-import android.speech.SpeechRecognizer
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.Text
@@ -30,7 +25,7 @@ import com.david.voicememos.macaw.entities.Recording
 import com.david.voicememos.macaw.entities.generateRecordingName
 import com.david.voicememos.macaw.ui.components.RecordButton
 import com.david.voicememos.macaw.ui.components.RecordingCard
-import java.util.*
+
 
 @ExperimentalMaterialApi
 @Composable
@@ -38,12 +33,9 @@ fun HomeScreen(
     homeViewModel: HomeViewModel,
     activity: HomeActivity,
     recordingList: MutableList<Recording>,
-    onClick: () -> Unit
+    onClick: (item: Recording) -> Unit
 ) {
     val isRecordingIdle = remember { mutableStateOf(true) }
-    if (recordingList.isNotEmpty()) {
-        remember { recordingList.add(0, Recording("", "", "")) }
-    }
     Box(
         modifier = Modifier.fillMaxWidth().fillMaxHeight()
     ) {
@@ -72,7 +64,7 @@ fun HomeScreen(
                     itemContent = { item ->
                         when (item) {
                             recordingList.last() -> {
-                                RecordingCard(item, onClickListener = onClick)
+                                RecordingCard(item, onClickListener = { onClick(item) })
                                 Box(Modifier.height(80.dp))
                             }
                             recordingList.first() -> {
@@ -105,7 +97,7 @@ fun HomeScreen(
                                 }
                             }
                             else -> {
-                                RecordingCard(item, onClickListener = onClick)
+                                RecordingCard(item, onClickListener = { onClick(item) })
                             }
                         }
                     })
@@ -137,7 +129,6 @@ private fun onRecordPressed(
                 if (startRecording.value) {
                     val fileName = generateRecordingName(activity.externalCacheDir?.absolutePath)
                     homeViewModel.startRecording(fileName)
-                    start(activity)
                 } else {
                     homeViewModel.stopRecording()
                     homeViewModel.readRecordings(activity.externalCacheDir?.absolutePath)
@@ -146,50 +137,4 @@ private fun onRecordPressed(
             }
         }.launch(Manifest.permission.RECORD_AUDIO)
     }
-}
-
-
-@ExperimentalMaterialApi
-fun start(activity: HomeActivity) {
-
-    val speechRecognizer = SpeechRecognizer.createSpeechRecognizer(activity.applicationContext)
-
-    val speechRecognizerIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
-    speechRecognizerIntent.putExtra(
-        RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-        RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
-    )
-    speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
-
-    speechRecognizer.setRecognitionListener(object : RecognitionListener {
-        override fun onReadyForSpeech(p0: Bundle?) {
-
-        }
-
-        override fun onBeginningOfSpeech() {
-        }
-
-        override fun onRmsChanged(p0: Float) {
-        }
-
-        override fun onBufferReceived(p0: ByteArray?) {
-        }
-
-        override fun onEndOfSpeech() {
-        }
-
-        override fun onError(p0: Int) {
-        }
-
-        override fun onResults(p0: Bundle?) {
-        }
-
-        override fun onPartialResults(p0: Bundle?) {
-        }
-
-        override fun onEvent(p0: Int, p1: Bundle?) {
-        }
-    })
-
-    speechRecognizer.startListening(speechRecognizerIntent)
 }

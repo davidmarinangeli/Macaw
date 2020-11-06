@@ -19,14 +19,14 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
 import com.david.voicememos.macaw.R
+import com.david.voicememos.macaw.entities.Recording
 import com.david.voicememos.macaw.ui.components.PlayButton
 import com.david.voicememos.macaw.ui.composebase.blue700
 import com.david.voicememos.macaw.ui.composebase.red500
 
 @ExperimentalMaterialApi
-@Preview(showBackground = true)
 @Composable
-fun RecordingDetailsScreen() {
+fun RecordingDetailsScreen(item: Recording?) {
     Box(modifier = Modifier.fillMaxHeight().fillMaxWidth()) {
         Column {
             Box(
@@ -53,7 +53,7 @@ fun RecordingDetailsScreen() {
                 ).fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text(text = "Title of ", style = MaterialTheme.typography.h5)
+                    Text(text = item?.dayAndTime ?: "", style = MaterialTheme.typography.h5)
                     Row(
                         modifier = Modifier.padding(top = 8.dp)
                     ) {
@@ -74,17 +74,6 @@ fun RecordingDetailsScreen() {
                     )
                 }
             }
-            Text(
-                "Word Standings",
-                style = MaterialTheme.typography.h5,
-                modifier = Modifier.padding(top = 8.dp, end = 16.dp, start = 16.dp)
-            )
-            Card(
-                shape = RoundedCornerShape(MaterialTheme.shapes.medium.topLeft),
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp).background(
-                    colors.surface
-                ).fillMaxWidth()
-            ) {}
         }
         Row(modifier = Modifier.align(Alignment.BottomCenter).padding(16.dp)) {
             Button(

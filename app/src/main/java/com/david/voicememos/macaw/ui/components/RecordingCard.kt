@@ -2,14 +2,12 @@ package com.david.voicememos.macaw.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.Text
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.MaterialTheme.colors
-import androidx.compose.material.MaterialTheme.shapes
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,22 +18,28 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.david.voicememos.macaw.R
 import com.david.voicememos.macaw.entities.Recording
-import com.david.voicememos.macaw.ui.composebase.shapes
-import com.david.voicememos.macaw.ui.composebase.typography
+import com.david.voicememos.macaw.ui.composebase.surfaceWhite
 
 @Composable
 fun RecordingCard(
     recording: Recording,
     onClickListener: () -> Unit
 ) {
-    Card(
-        backgroundColor = colors.surface,
+
+    val color = if (colors.isLight){
+       surfaceWhite
+    } else {
+        colors.surface
+    }
+
+    Surface(
+        elevation = 2.dp,
+        color = color,
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .clip(MaterialTheme.shapes.medium)
-            .clickable(onClick = onClickListener),
-        elevation = 2.dp
+            .clickable(onClick = onClickListener)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
