@@ -32,16 +32,21 @@ fun MacawMain(
                 activity = activity,
                 onClick = { item ->
                     navController.navigate(
-                        "${Screen.RecordingDetails.route}/${item}"
+                        "${Screen.RecordingDetails.route}/${item.dayAndTime}/${item.duration}/${item.path}"
                     )
                 },
                 recordingList = recordingList.toMutableList()
             )
         }
         composable(
-            "${Screen.RecordingDetails.route}/{recording}"
+            "${Screen.RecordingDetails.route}/{dayAndTime}/{duration}/{path}"
         ) { backStackEntry ->
-            RecordingDetailsScreen(backStackEntry.arguments?.getParcelable<Recording>("recording"))
+            RecordingDetailsScreen(
+                backStackEntry.arguments?.getString("dayAndTime") ?: "",
+                backStackEntry.arguments?.getString("duration") ?: "",
+                backStackEntry.arguments?.getString("path") ?: "",
+                activity.applicationContext
+            )
         }
     }
 }

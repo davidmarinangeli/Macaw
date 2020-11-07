@@ -13,7 +13,8 @@ import java.util.concurrent.TimeUnit
 data class Recording(
     val duration: String,
     val date: String,
-    val dayAndTime: String
+    val dayAndTime: String,
+    val path: String
 ) : Parcelable
 
 
@@ -25,12 +26,12 @@ fun convertFilesToRecordings(file: List<File>): List<Recording> {
         calendar.time = Date(it.lastModified())
 
         mmr.setDataSource(it.path)
-        val duration = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION).toLong()
+        val duration = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)?.toLong()
 
         val timeDuration = String.format(
             "%02d:%02d",
-            TimeUnit.MILLISECONDS.toMinutes(duration),
-            TimeUnit.MILLISECONDS.toSeconds(duration)
+            TimeUnit.MILLISECONDS.toMinutes(duration ?: 0),
+            TimeUnit.MILLISECONDS.toSeconds(duration ?: 0)
         )
 
         return@map Recording(
@@ -48,11 +49,12 @@ fun convertFilesToRecordings(file: List<File>): List<Recording> {
             } at " +
                     "${calendar.get(Calendar.HOUR_OF_DAY)}:${calendar.get(Calendar.MINUTE)}",
             duration = timeDuration,
+            path = it.path
         )
     }.toMutableList()
 
     if (recordingList.isNotEmpty()) {
-        recordingList.add(0, Recording("", "", ""))
+        recordingList.add(0, Recording("", "", "", ""))
     }
 
     mmr.release()
