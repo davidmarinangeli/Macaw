@@ -66,5 +66,5 @@ fun generateRecordingName(path: String?): String {
         SimpleDateFormat("ddMMyyyy-HHmmss", Locale.getDefault()).format(
             Calendar.getInstance().time
         )
-    }.mp4"
+    }.m4a"
 }

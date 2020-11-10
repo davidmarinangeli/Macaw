@@ -12,6 +12,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,7 +45,18 @@ fun RecordingDetailsScreen(
         colors.surface
     }
 
+    val isPlaying = remember { mutableStateOf(false) }
     val myUri: Uri = Uri.fromFile(File(path))
+    val mediaPlayer: MediaPlayer? = MediaPlayer().apply {
+        setAudioAttributes(
+            AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                .setUsage(AudioAttributes.USAGE_MEDIA)
+                .build()
+        )
+        setDataSource(applicationContext, myUri)
+        prepare()
+    }
 
     Box(modifier = Modifier.fillMaxHeight().fillMaxWidth()) {
         Column {
@@ -100,7 +113,7 @@ fun RecordingDetailsScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             FloatingActionButton(
-                onClick = {},
+                onClick = { mediaPlayer?.seekTo(mediaPlayer.currentPosition - 10000) },
                 modifier = Modifier.padding(horizontal = 32.dp)
                     .defaultMinSizeConstraints(minWidth = 38.dp, minHeight = 38.dp),
                 backgroundColor = colors.secondaryVariant
@@ -112,19 +125,31 @@ fun RecordingDetailsScreen(
                 )
             }
             FloatingActionButton(
-                onClick = onPlayButtonPressed(applicationContext, myUri), backgroundColor = colors.secondary,
+                onClick = {
+                    if (isPlaying.value) {
+                        mediaPlayer?.pause()
+                    } else {
+                        mediaPlayer?.start()
+                    }
+                    isPlaying.value = !isPlaying.value
+                },
+                backgroundColor = colors.secondary,
                 modifier = Modifier
                     .defaultMinSizeConstraints(minWidth = 64.dp, minHeight = 64.dp),
             ) {
                 Image(
                     colorFilter = ColorFilter.tint(Color.White),
-                    asset = vectorResource(id = R.drawable.ic_baseline_play_arrow_24),
+                    asset = if (isPlaying.value) {
+                        vectorResource(id = R.drawable.ic_baseline_pause_24)
+                    } else {
+                        vectorResource(id = R.drawable.ic_baseline_play_arrow_24)
+                    },
                     modifier = Modifier.preferredWidth(48.dp),
                     contentScale = ContentScale.FillWidth
                 )
             }
             FloatingActionButton(
-                onClick = {},
+                onClick = { mediaPlayer?.seekTo(mediaPlayer.currentPosition + 10000) },
                 modifier = Modifier.padding(horizontal = 32.dp)
                     .defaultMinSizeConstraints(minWidth = 38.dp, minHeight = 38.dp),
                 backgroundColor = colors.secondaryVariant
@@ -135,26 +160,6 @@ fun RecordingDetailsScreen(
                     contentScale = ContentScale.FillWidth
                 )
             }
-        }
-    }
-}
-
-@Composable
-private fun onPlayButtonPressed(
-    applicationContext: Context,
-    myUri: Uri
-): () -> Unit {
-    return {
-        val mediaPlayer: MediaPlayer? = MediaPlayer().apply {
-            setAudioAttributes(
-                AudioAttributes.Builder()
-                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                    .setUsage(AudioAttributes.USAGE_MEDIA)
-                    .build()
-            )
-            setDataSource(applicationContext, myUri)
-            prepare()
-            start()
         }
     }
 }
