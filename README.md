@@ -27,4 +27,4 @@ I'm maintaining the project and adding new features to it. At the moment I'm wor
 
 
 
-<img src="https://raw.githubusercontent.com/davidmarinangeli/Macaw/master/2D14B464-44A1-4563-9CC7-89FEED886426.png" width="300" alignment="center" /><img src="https://raw.githubusercontent.com/davidmarinangeli/Macaw/master/FDB5CC3A-FCF4-4FA8-B18C-8C28E738D45B.png" width="300" alignment="center" />
+<img src="https://raw.githubusercontent.com/davidmarinangeli/Macaw/master/2D14B464-44A1-4563-9CC7-89FEED886426.png" width="300" alignment="center" />    <img src="https://raw.githubusercontent.com/davidmarinangeli/Macaw/master/FDB5CC3A-FCF4-4FA8-B18C-8C28E738D45B.png" width="300" alignment="center" />
