@@ -22,3 +22,6 @@ I'm maintaining the project and adding new features to it. At the moment I'm wor
 3. Homepage with a custom header item
 4. Components refactoring - some of them could be reorganised and reused
 5. Repository - the Files fetch shouldn't be in the ViewModel!!
+
+## Screenshots
+
