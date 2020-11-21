@@ -1,4 +1,4 @@
-package com.david.voicememos.macaw.ui.navigation
+package com.david.voicememos.macaw.navigation
 
 import androidx.annotation.StringRes
 import com.david.voicememos.macaw.R

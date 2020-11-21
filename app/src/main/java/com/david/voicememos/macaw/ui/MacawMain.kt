@@ -11,7 +11,7 @@ import com.david.voicememos.macaw.entities.Recording
 import com.david.voicememos.macaw.ui.home.HomeActivity
 import com.david.voicememos.macaw.ui.home.HomeScreen
 import com.david.voicememos.macaw.ui.home.HomeViewModel
-import com.david.voicememos.macaw.ui.navigation.Screen
+import com.david.voicememos.macaw.navigation.Screen
 import com.david.voicememos.macaw.ui.recordingdetails.RecordingDetailsScreen
 
 @ExperimentalMaterialApi
