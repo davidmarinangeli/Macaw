@@ -2,6 +2,8 @@
 
 <img src="https://github.com/davidmarinangeli/Macaw/blob/master/app/src/main/ic_launcher-playstore.png?raw=true" width="300" alignment="center" />
 
+⚠️ Project temporarily paused - will come back during christmas time 😬 ⚠️
+
 Macaw is an Android app in **Kotlin** that I'm developing using **Jetpack Compose**.
 
 ## What does it do? 🤔
