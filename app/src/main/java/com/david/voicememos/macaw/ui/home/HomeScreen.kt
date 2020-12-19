@@ -66,11 +66,11 @@ fun HomeScreen(
                                             imageVector = vectorResource(id = R.drawable.homescreen_background),
                                             modifier = Modifier.padding(bottom = 16.dp).clip(
                                                 shape = RoundedCornerShape(
-                                                    bottomRight = 32.dp,
-                                                    bottomLeft = 32.dp
+                                                    bottomRight = 16.dp,
+                                                    bottomLeft = 16.dp
                                                 )
                                             ).fillMaxWidth(),
-                                            contentScale = ContentScale.Fit
+                                            contentScale = ContentScale.FillBounds
                                         )
                                         Column(
                                             modifier = Modifier.align(Alignment.BottomStart)
