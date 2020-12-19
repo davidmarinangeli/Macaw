@@ -11,9 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.HorizontalGradient
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -22,14 +22,13 @@ import com.david.voicememos.macaw.ui.composebase.red700
 import com.david.voicememos.macaw.ui.composebase.red800
 
 @Composable
-fun RecordButton(layoutModifier: Modifier, isRecordingIdle: Boolean, onClickListener: () -> Unit) {
-    val gradientBackground = HorizontalGradient(
-        0.0f to red800,
-        1.0f to red700,
+fun RecordButton(modifier: Modifier, isRecording: Boolean, onClickListener: () -> Unit) {
+    val gradientBackground = Brush.horizontalGradient(
+        colors = listOf(red800,red700),
         startX = 0f,
         endX = 128f
     )
-    val componentModifier = layoutModifier.run {
+    val componentModifier = modifier.run {
         this
             .size(64.dp)
             .clip(CircleShape)
@@ -38,10 +37,10 @@ fun RecordButton(layoutModifier: Modifier, isRecordingIdle: Boolean, onClickList
     }
 
     Surface(color = Color.Transparent, modifier = componentModifier) {
-        if (!isRecordingIdle) {
+        if (isRecording) {
             Image(
                 colorFilter = ColorFilter.tint(Color.White),
-                asset = vectorResource(id = R.drawable.ic_baseline_stop_24),
+                imageVector=vectorResource(id = R.drawable.ic_baseline_stop_24),
                 alignment = Alignment.Center,
                 modifier = Modifier.preferredWidth(42.dp),
                 contentScale = ContentScale.FillWidth

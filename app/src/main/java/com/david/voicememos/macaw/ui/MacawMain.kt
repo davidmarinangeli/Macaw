@@ -2,6 +2,7 @@ package com.david.voicememos.macaw.ui
 
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -24,9 +25,9 @@ fun MacawMain(
 
     NavHost(navController, startDestination = Screen.Home.route) {
         composable(Screen.Home.route) {
-            homeViewModel.readRecordings(activity.externalCacheDir?.absolutePath)
+            homeViewModel.readRecordings()
             val recordingList: List<Recording> =
-                homeViewModel.recordings.observeAsState().value ?: listOf()
+                homeViewModel.recordings.collectAsState().value
             HomeScreen(
                 homeViewModel = homeViewModel,
                 activity = activity,

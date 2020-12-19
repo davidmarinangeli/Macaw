@@ -32,7 +32,7 @@ fun MacawSurface(
         Providers(
             AmbientContentColor provides contentColorFor(color),
             AmbientAbsoluteElevation provides AmbientAbsoluteElevation.current,
-            children = content
+            content = content
         )
     }
 }
