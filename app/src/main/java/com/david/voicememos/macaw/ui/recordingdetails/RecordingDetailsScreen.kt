@@ -29,45 +29,39 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import com.david.voicememos.macaw.R
+import com.david.voicememos.macaw.entities.convertDurationToString
 import com.david.voicememos.macaw.ui.components.MacawSeekbar
 import com.david.voicememos.macaw.ui.components.MacawSurface
 import com.david.voicememos.macaw.ui.composebase.blue700
 import com.david.voicememos.macaw.ui.composebase.red500
+import com.david.voicememos.macaw.ui.home.HomeViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.io.File
 import java.lang.Exception
 import kotlin.concurrent.timer
 import kotlin.math.min
 
 
+@ExperimentalCoroutinesApi
 @ExperimentalMaterialApi
 @Composable
 fun RecordingDetailsScreen(
     dayAndTime: String,
     duration: String,
     path: String,
-    applicationContext: Context
+    viewModel: HomeViewModel
 ) {
 
     val isPlaying = remember { mutableStateOf(false) }
 
-    val myUri: Uri = Uri.fromFile(File(path))
-    val mediaPlayer: MediaPlayer = MediaPlayer().apply {
-        setAudioAttributes(
-            AudioAttributes.Builder()
-                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                .setUsage(AudioAttributes.USAGE_MEDIA)
-                .build()
-        )
-        setDataSource(applicationContext, myUri)
-        prepare()
-    }
+    val mHandler = Handler(Looper.getMainLooper())
+    var currentTime by remember { mutableStateOf(0) }
 
-    mediaPlayer.setOnCompletionListener {
+    viewModel.initMediaPlayer(Uri.fromFile(File(path)))
+
+    if (viewModel.isStreamCompleted.collectAsState().value) {
         isPlaying.value = false
     }
-
-    val mHandler = Handler(Looper.getMainLooper())
-    var text by remember { mutableStateOf("info") }
 
     Box(modifier = Modifier.fillMaxHeight().fillMaxWidth()) {
         Column {
@@ -111,14 +105,17 @@ fun RecordingDetailsScreen(
                     )
                 }
             }
-            MacawSeekbar()
+            MacawSeekbar(
+                currentTime = currentTime,
+                duration = viewModel.getMediaDuration()
+            )
         }
         Row(
             modifier = Modifier.align(Alignment.BottomCenter).padding(24.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             FloatingActionButton(
-                onClick = { mediaPlayer.seekTo(mediaPlayer.currentPosition - 10000) },
+                onClick = { viewModel.rewindTenSeconds() },
                 modifier = Modifier.padding(horizontal = 32.dp)
                     .defaultMinSizeConstraints(minWidth = 38.dp, minHeight = 38.dp),
                 backgroundColor = colors.secondaryVariant
@@ -131,25 +128,24 @@ fun RecordingDetailsScreen(
             }
             FloatingActionButton(
                 onClick = {
-                    if (mediaPlayer.isPlaying) {
-                        mediaPlayer.pause()
+                    if (isPlaying.value) {
+                        viewModel.pauseMedia()
+                        mHandler.removeCallbacksAndMessages(null)
                     } else {
-                        mediaPlayer.start()
-
+                        viewModel.playMedia()
 
                         mHandler.postDelayed(object : Runnable {
 
                             override fun run() {
-                                try {
 
-                                    if (mediaPlayer.isPlaying) mHandler.postDelayed(this, 1000)
-
-                                } catch (e: Exception) {
-                                    Log.e("error", e.message ?: "")
+                                if (isPlaying.value) {
+                                    mHandler.postDelayed(this, 1000)
+                                    currentTime = viewModel.getMediaDuration()
                                 }
                             }
                         }, 0)
                     }
+
                     isPlaying.value = !isPlaying.value
                 },
                 backgroundColor = colors.secondary,
@@ -168,8 +164,7 @@ fun RecordingDetailsScreen(
                 )
             }
             FloatingActionButton(
-
-                onClick = { mediaPlayer.seekTo(mediaPlayer.currentPosition + (min(10000, mediaPlayer.duration - mediaPlayer.currentPosition))) },
+                onClick = { viewModel.forwardTenSeconds() },
                 modifier = Modifier.padding(horizontal = 32.dp)
                     .defaultMinSizeConstraints(minWidth = 38.dp, minHeight = 38.dp),
                 backgroundColor = colors.secondaryVariant

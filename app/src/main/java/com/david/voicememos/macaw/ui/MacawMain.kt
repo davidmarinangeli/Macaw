@@ -14,7 +14,9 @@ import com.david.voicememos.macaw.ui.home.HomeScreen
 import com.david.voicememos.macaw.ui.home.HomeViewModel
 import com.david.voicememos.macaw.navigation.Screen
 import com.david.voicememos.macaw.ui.recordingdetails.RecordingDetailsScreen
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 @ExperimentalMaterialApi
 @Composable
 fun MacawMain(
@@ -46,7 +48,7 @@ fun MacawMain(
                 backStackEntry.arguments?.getString("dayAndTime") ?: "",
                 backStackEntry.arguments?.getString("duration") ?: "",
                 backStackEntry.arguments?.getString("path") ?: "",
-                activity.applicationContext
+                homeViewModel
             )
         }
     }

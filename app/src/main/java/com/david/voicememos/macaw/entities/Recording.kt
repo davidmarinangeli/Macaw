@@ -26,13 +26,9 @@ fun convertFilesToRecordings(file: List<File>): List<Recording> {
         calendar.time = Date(it.lastModified())
 
         mmr.setDataSource(it.path)
-        val duration = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)?.toLong()
+        val duration = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION) ?: "0"
 
-        val timeDuration = String.format(
-            "%02d:%02d",
-            TimeUnit.MILLISECONDS.toMinutes(duration ?: 0),
-            TimeUnit.MILLISECONDS.toSeconds(duration ?: 0)
-        )
+        val timeDuration = convertDurationToString(duration.toInt())
 
         return@map Recording(
             date = "${calendar.get(Calendar.DAY_OF_MONTH)} ${
@@ -60,6 +56,12 @@ fun convertFilesToRecordings(file: List<File>): List<Recording> {
     mmr.release()
     return recordingList
 }
+
+ fun convertDurationToString(duration: Int): String = String.format(
+    "%02d:%02d",
+    TimeUnit.MILLISECONDS.toMinutes(duration.toLong()),
+    TimeUnit.MILLISECONDS.toSeconds(duration.toLong())
+)
 
 fun generateRecordingName(path: String?): String {
     return "${path}/Macaw-${
