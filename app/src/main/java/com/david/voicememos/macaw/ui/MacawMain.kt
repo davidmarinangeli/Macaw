@@ -1,5 +1,6 @@
 package com.david.voicememos.macaw.ui
 
+import android.net.Uri
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -14,13 +15,16 @@ import com.david.voicememos.macaw.ui.home.HomeScreen
 import com.david.voicememos.macaw.ui.home.HomeViewModel
 import com.david.voicememos.macaw.navigation.Screen
 import com.david.voicememos.macaw.ui.recordingdetails.RecordingDetailsScreen
+import com.david.voicememos.macaw.ui.recordingdetails.RecordingDetailsViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import java.io.File
 
 @ExperimentalCoroutinesApi
 @ExperimentalMaterialApi
 @Composable
 fun MacawMain(
     homeViewModel: HomeViewModel,
+    recordingDetailsViewModel: RecordingDetailsViewModel,
     activity: HomeActivity
 ) {
     val navController = rememberNavController()
@@ -44,11 +48,18 @@ fun MacawMain(
         composable(
             "${Screen.RecordingDetails.route}/{dayAndTime}/{duration}/{path}"
         ) { backStackEntry ->
+
+            recordingDetailsViewModel.initMediaPlayer(
+                Uri.fromFile(
+                    File(backStackEntry.arguments?.getString("path") ?: "")
+                )
+            )
+
             RecordingDetailsScreen(
                 backStackEntry.arguments?.getString("dayAndTime") ?: "",
                 backStackEntry.arguments?.getString("duration") ?: "",
                 backStackEntry.arguments?.getString("path") ?: "",
-                homeViewModel
+                recordingDetailsViewModel
             )
         }
     }

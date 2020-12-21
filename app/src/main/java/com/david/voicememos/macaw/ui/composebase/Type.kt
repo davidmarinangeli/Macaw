@@ -9,8 +9,8 @@ import com.david.voicememos.macaw.R
 val RFlex = fontFamily(
     font(R.font.rflex_bold, FontWeight.Bold),
     font(R.font.rflex_regular, FontWeight.Normal),
-    font(R.font.rflex_bold_italic, FontWeight.Bold, FontStyle.Italic),
-    font(R.font.rflex_regular_italic, FontWeight.Normal, FontStyle.Italic)
+    font(R.font.rflex_regular_italic, FontWeight.Normal, FontStyle.Italic),
+    font(R.font.rflex_medium, FontWeight.Medium),
 )
 
 // Set of Material typography styles to start with
@@ -27,7 +27,7 @@ val typography = Typography(
     ),
     h5 = TextStyle(
         fontFamily = RFlex,
-        fontWeight = FontWeight.Medium,
+        fontWeight = FontWeight.Bold,
         fontSize = 24.sp
     ),
     h6 = TextStyle(

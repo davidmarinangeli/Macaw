@@ -11,14 +11,19 @@ import androidx.compose.material.Surface
 import androidx.compose.ui.platform.setContent
 import com.david.voicememos.macaw.ui.MacawMain
 import com.david.voicememos.macaw.ui.composebase.MacawTheme
+import com.david.voicememos.macaw.ui.recordingdetails.RecordingDetailsViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
 
+@ExperimentalCoroutinesApi
 @ExperimentalMaterialApi
 class HomeActivity : AppCompatActivity() {
 
-    private val homeViewModel by viewModels<HomeViewModel>()
+    private val homeViewModel by inject<HomeViewModel>()
+    private val recordingDetailsViewModel by inject<RecordingDetailsViewModel>()
 
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -37,7 +42,7 @@ class HomeActivity : AppCompatActivity() {
         setContent {
             MacawTheme {
                 Surface(color = MaterialTheme.colors.background) {
-                    MacawMain(homeViewModel, this)
+                    MacawMain(homeViewModel, recordingDetailsViewModel, this)
                 }
             }
         }

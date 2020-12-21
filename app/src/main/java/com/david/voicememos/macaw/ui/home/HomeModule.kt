@@ -1,16 +1,16 @@
 package com.david.voicememos.macaw.ui.home
 
-import android.media.AudioAttributes
-import android.media.MediaDataSource
-import android.media.MediaPlayer
 import android.media.MediaRecorder
+import com.david.voicememos.macaw.ui.recordingdetails.RecordingDetailsViewModel
 import org.koin.android.ext.koin.androidContext
+import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val homeModule = module {
-    factory { HomeViewModel(get(),get()) }
+    viewModel { HomeViewModel(get()) }
+    viewModel { RecordingDetailsViewModel(get()) }
 
-    factory { LilloPlayer(androidContext()) }
+    single { MacawPlayer(androidContext()) }
 
     factory {
         MediaRecorder().apply {

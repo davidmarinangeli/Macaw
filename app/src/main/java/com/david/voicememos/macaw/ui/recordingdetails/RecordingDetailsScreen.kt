@@ -1,12 +1,6 @@
 package com.david.voicememos.macaw.ui.recordingdetails
 
-import android.content.Context
-import android.media.AudioAttributes
-import android.media.MediaPlayer
 import android.net.Uri
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -23,23 +17,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.HorizontalGradient
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import com.david.voicememos.macaw.R
-import com.david.voicememos.macaw.entities.convertDurationToString
 import com.david.voicememos.macaw.ui.components.MacawSeekbar
 import com.david.voicememos.macaw.ui.components.MacawSurface
 import com.david.voicememos.macaw.ui.composebase.blue700
 import com.david.voicememos.macaw.ui.composebase.red500
-import com.david.voicememos.macaw.ui.home.HomeViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.io.File
-import java.lang.Exception
-import kotlin.concurrent.timer
-import kotlin.math.min
 
 
 @ExperimentalCoroutinesApi
@@ -49,19 +37,9 @@ fun RecordingDetailsScreen(
     dayAndTime: String,
     duration: String,
     path: String,
-    viewModel: HomeViewModel
+    viewModel: RecordingDetailsViewModel
 ) {
-
-    val isPlaying = remember { mutableStateOf(false) }
-
-    val mHandler = Handler(Looper.getMainLooper())
-    var currentTime by remember { mutableStateOf(0) }
-
-    viewModel.initMediaPlayer(Uri.fromFile(File(path)))
-
-    if (viewModel.isStreamCompleted.collectAsState().value) {
-        isPlaying.value = false
-    }
+    val state by viewModel.middlePlayer.collectAsState()
 
     Box(modifier = Modifier.fillMaxHeight().fillMaxWidth()) {
         Column {
@@ -106,8 +84,7 @@ fun RecordingDetailsScreen(
                 }
             }
             MacawSeekbar(
-                currentTime = currentTime,
-                duration = viewModel.getMediaDuration()
+                currentTime = state.currentPosition, duration = state.duration
             )
         }
         Row(
@@ -128,25 +105,11 @@ fun RecordingDetailsScreen(
             }
             FloatingActionButton(
                 onClick = {
-                    if (isPlaying.value) {
+                    if (state.isPlaying) {
                         viewModel.pauseMedia()
-                        mHandler.removeCallbacksAndMessages(null)
                     } else {
                         viewModel.playMedia()
-
-                        mHandler.postDelayed(object : Runnable {
-
-                            override fun run() {
-
-                                if (isPlaying.value) {
-                                    mHandler.postDelayed(this, 1000)
-                                    currentTime = viewModel.getMediaDuration()
-                                }
-                            }
-                        }, 0)
                     }
-
-                    isPlaying.value = !isPlaying.value
                 },
                 backgroundColor = colors.secondary,
                 modifier = Modifier
@@ -154,7 +117,7 @@ fun RecordingDetailsScreen(
             ) {
                 Image(
                     colorFilter = ColorFilter.tint(Color.White),
-                    imageVector = if (isPlaying.value) {
+                    imageVector = if (state.isPlaying) {
                         vectorResource(id = R.drawable.ic_baseline_pause_24)
                     } else {
                         vectorResource(id = R.drawable.ic_baseline_play_arrow_24)

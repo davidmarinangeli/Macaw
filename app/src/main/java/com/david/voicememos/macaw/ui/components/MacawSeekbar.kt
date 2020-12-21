@@ -25,14 +25,14 @@ fun MacawSeekbar(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(modifier = Modifier.padding(end = 4.dp), text = convertDurationToString(currentTime))
-        Box(modifier = Modifier.fillMaxWidth()) {
+        Box(modifier = Modifier.fillMaxWidth(0.8f)) {
             Box(
                 modifier = Modifier.height(6.dp).clip(RoundedCornerShape(3.dp)).fillMaxWidth()
                     .background(colors.primaryVariant).align(Alignment.CenterStart)
             )
             Box(
                 modifier = Modifier.height(6.dp).clip(RoundedCornerShape(3.dp))
-                    .fillMaxWidth(((currentTime / duration.toFloat())))
+                    .fillMaxWidth(currentTime / duration.toFloat())
                     .background(colors.secondary).align(Alignment.CenterStart)
             )
         }

@@ -4,8 +4,10 @@ import android.content.Context
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.net.Uri
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-class LilloPlayer(private val context: Context) {
+class MacawPlayer(private val context: Context) {
 
     val mediaPlayer = MediaPlayer().apply {
         setAudioAttributes(
@@ -14,15 +16,18 @@ class LilloPlayer(private val context: Context) {
                 .setUsage(AudioAttributes.USAGE_MEDIA)
                 .build()
         )
-
     }
 
-    fun prepareMediaPlayer(uri: Uri): MediaPlayer {
-        mediaPlayer.setDataSource(context, uri)
-        mediaPlayer.prepareAsync()
+    suspend fun prepareMediaPlayer(uri: Uri): MediaPlayer {
+        return withContext(Dispatchers.IO) {
+            mediaPlayer.apply {
+                stop()
+                reset()
+                setDataSource(context, uri)
+                prepare()
 
-        return mediaPlayer
+            }
+            mediaPlayer
+        }
     }
-
-
 }
