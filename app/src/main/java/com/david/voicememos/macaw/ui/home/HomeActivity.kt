@@ -34,11 +34,6 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        startKoin {
-            androidContext(this@HomeActivity)
-            modules(homeModule)
-        }
-
         setContent {
             MacawTheme {
                 Surface(color = MaterialTheme.colors.background) {

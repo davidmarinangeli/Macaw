@@ -42,8 +42,11 @@ fun convertFilesToRecordings(file: List<File>): List<Recording> {
                     "EEEE",
                     Locale.getDefault()
                 ).format(calendar.time)
-            } at " +
-                    "${calendar.get(Calendar.HOUR_OF_DAY)}:${calendar.get(Calendar.MINUTE)}",
+            } at " + String.format(
+                "%02d:%02d",
+                calendar.get(Calendar.HOUR_OF_DAY),
+                calendar.get(Calendar.MINUTE)
+            ),
             duration = timeDuration,
             path = it.path
         )
@@ -57,7 +60,7 @@ fun convertFilesToRecordings(file: List<File>): List<Recording> {
     return recordingList
 }
 
- fun convertDurationToString(duration: Int): String = String.format(
+fun convertDurationToString(duration: Int): String = String.format(
     "%02d:%02d",
     TimeUnit.MILLISECONDS.toMinutes(duration.toLong()),
     TimeUnit.MILLISECONDS.toSeconds(duration.toLong())

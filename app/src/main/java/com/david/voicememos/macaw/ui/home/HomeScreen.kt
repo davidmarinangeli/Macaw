@@ -29,6 +29,9 @@ fun HomeScreen(
     recordingList: MutableList<Recording>,
     onClick: (item: Recording) -> Unit
 ) {
+
+    val recordingState = homeViewModel.recordingState.collectAsState()
+
     Box(
         modifier = Modifier.fillMaxWidth().fillMaxHeight()
     ) {
@@ -79,12 +82,12 @@ fun HomeScreen(
                                             Text(
                                                 text = "Hey,",
                                                 style = MaterialTheme.typography.h5,
-                                                color = colors.surface
+                                                color = colors.onSurface
                                             )
                                             Text(
                                                 text = "David",
                                                 style = MaterialTheme.typography.h2,
-                                                color = colors.surface
+                                                color = colors.onSurface
                                             )
                                         }
                                     }
@@ -97,7 +100,6 @@ fun HomeScreen(
                 }
             }
         }
-        val recordingState = homeViewModel.recordingState.collectAsState()
 
         RecordButton(
             modifier = Modifier.padding(16.dp).align(Alignment.BottomCenter),

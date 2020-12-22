@@ -20,14 +20,24 @@ val typography = Typography(
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp
     ),
+    body2 = TextStyle(
+        fontFamily = RFlex,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp
+    ),
     h2 = TextStyle(
         fontFamily = RFlex,
         fontWeight = FontWeight.Bold,
         fontSize = 60.sp
     ),
-    h5 = TextStyle(
+    h4 = TextStyle(
         fontFamily = RFlex,
         fontWeight = FontWeight.Bold,
+        fontSize = 28.sp
+    ),
+    h5 = TextStyle(
+        fontFamily = RFlex,
+        fontWeight = FontWeight.Medium,
         fontSize = 24.sp
     ),
     h6 = TextStyle(
@@ -39,7 +49,7 @@ val typography = Typography(
         fontFamily = RFlex,
         fontWeight = FontWeight.Medium,
         fontSize = 18.sp
-    ),
+    )
     /* Other default text styles to override
 
 caption = TextStyle(

@@ -57,7 +57,7 @@ fun RecordingDetailsScreen(
             }
             Text(
                 "Info",
-                style = MaterialTheme.typography.h5,
+                style = MaterialTheme.typography.h4,
                 modifier = Modifier.padding(top = 16.dp, end = 16.dp, start = 16.dp)
             )
             MacawSurface(onClick = null) {
@@ -77,66 +77,71 @@ fun RecordingDetailsScreen(
                     }
                     Text(
                         text = "Saved in $path",
-                        style = MaterialTheme.typography.caption,
+                        style = MaterialTheme.typography.body2,
                         modifier = Modifier.padding(top = 8.dp),
                         fontStyle = FontStyle.Italic
                     )
                 }
             }
+        }
+        Column(
+            modifier = Modifier.align(Alignment.BottomCenter).padding(24.dp)
+        ) {
             MacawSeekbar(
                 currentTime = state.currentPosition, duration = state.duration
             )
-        }
-        Row(
-            modifier = Modifier.align(Alignment.BottomCenter).padding(24.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            FloatingActionButton(
-                onClick = { viewModel.rewindTenSeconds() },
-                modifier = Modifier.padding(horizontal = 32.dp)
-                    .defaultMinSizeConstraints(minWidth = 38.dp, minHeight = 38.dp),
-                backgroundColor = colors.secondaryVariant
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
             ) {
-                Image(
-                    colorFilter = ColorFilter.tint(Color.White),
-                    imageVector = vectorResource(id = R.drawable.ic_baseline_replay_10_24),
-                    contentScale = ContentScale.FillWidth
-                )
-            }
-            FloatingActionButton(
-                onClick = {
-                    if (state.isPlaying) {
-                        viewModel.pauseMedia()
-                    } else {
-                        viewModel.playMedia()
-                    }
-                },
-                backgroundColor = colors.secondary,
-                modifier = Modifier
-                    .defaultMinSizeConstraints(minWidth = 64.dp, minHeight = 64.dp),
-            ) {
-                Image(
-                    colorFilter = ColorFilter.tint(Color.White),
-                    imageVector = if (state.isPlaying) {
-                        vectorResource(id = R.drawable.ic_baseline_pause_24)
-                    } else {
-                        vectorResource(id = R.drawable.ic_baseline_play_arrow_24)
+                FloatingActionButton(
+                    onClick = { viewModel.rewindTenSeconds() },
+                    modifier = Modifier.padding(horizontal = 32.dp)
+                        .defaultMinSizeConstraints(minWidth = 38.dp, minHeight = 38.dp),
+                    backgroundColor = colors.secondaryVariant
+                ) {
+                    Image(
+                        colorFilter = ColorFilter.tint(Color.White),
+                        imageVector = vectorResource(id = R.drawable.ic_baseline_replay_10_24),
+                        contentScale = ContentScale.FillWidth
+                    )
+                }
+                FloatingActionButton(
+                    onClick = {
+                        if (state.isPlaying) {
+                            viewModel.pauseMedia()
+                        } else {
+                            viewModel.playMedia()
+                        }
                     },
-                    modifier = Modifier.preferredWidth(48.dp),
-                    contentScale = ContentScale.FillWidth
-                )
-            }
-            FloatingActionButton(
-                onClick = { viewModel.forwardTenSeconds() },
-                modifier = Modifier.padding(horizontal = 32.dp)
-                    .defaultMinSizeConstraints(minWidth = 38.dp, minHeight = 38.dp),
-                backgroundColor = colors.secondaryVariant
-            ) {
-                Image(
-                    colorFilter = ColorFilter.tint(Color.White),
-                    imageVector = vectorResource(id = R.drawable.ic_baseline_forward_10_24),
-                    contentScale = ContentScale.FillWidth
-                )
+                    backgroundColor = colors.secondary,
+                    modifier = Modifier
+                        .defaultMinSizeConstraints(minWidth = 64.dp, minHeight = 64.dp),
+                ) {
+                    Image(
+                        colorFilter = ColorFilter.tint(Color.White),
+                        imageVector = if (state.isPlaying) {
+                            vectorResource(id = R.drawable.ic_baseline_pause_24)
+                        } else {
+                            vectorResource(id = R.drawable.ic_baseline_play_arrow_24)
+                        },
+                        modifier = Modifier.preferredWidth(48.dp),
+                        contentScale = ContentScale.FillWidth
+                    )
+                }
+                FloatingActionButton(
+                    onClick = { viewModel.forwardTenSeconds() },
+                    modifier = Modifier.padding(horizontal = 32.dp)
+                        .defaultMinSizeConstraints(minWidth = 38.dp, minHeight = 38.dp),
+                    backgroundColor = colors.secondaryVariant
+                ) {
+                    Image(
+                        colorFilter = ColorFilter.tint(Color.White),
+                        imageVector = vectorResource(id = R.drawable.ic_baseline_forward_10_24),
+                        contentScale = ContentScale.FillWidth
+                    )
+                }
             }
         }
     }

@@ -24,18 +24,7 @@ fun RecordingCard(
 
     MacawSurface(onClick = onClickListener) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(text = recording.dayAndTime, style = MaterialTheme.typography.h6)
-                Image(
-                    colorFilter = ColorFilter.tint(colors.primary),
-                    imageVector = vectorResource(id = R.drawable.ic_baseline_play_arrow_24),
-                    modifier = Modifier.preferredWidth(32.dp).align(Alignment.CenterVertically),
-                    contentScale = ContentScale.FillWidth
-                )
-            }
+            Text(text = recording.dayAndTime, style = MaterialTheme.typography.h6)
             Text(text = recording.date, style = MaterialTheme.typography.body1)
             Text(
                 text = recording.duration,
