@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.Surface
 import androidx.compose.ui.platform.setContent
 import com.david.voicememos.macaw.ui.MacawMain
@@ -36,7 +37,7 @@ class HomeActivity : AppCompatActivity() {
 
         setContent {
             MacawTheme {
-                Surface(color = MaterialTheme.colors.background) {
+                Surface(color = colors.background) {
                     MacawMain(homeViewModel, recordingDetailsViewModel, this)
                 }
             }

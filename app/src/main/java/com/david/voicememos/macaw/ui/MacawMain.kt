@@ -28,10 +28,10 @@ fun MacawMain(
     activity: HomeActivity
 ) {
     val navController = rememberNavController()
+    homeViewModel.readRecordings()
 
     NavHost(navController, startDestination = Screen.Home.route) {
         composable(Screen.Home.route) {
-            homeViewModel.readRecordings()
             val recordingList: List<Recording> =
                 homeViewModel.recordings.collectAsState().value
             HomeScreen(

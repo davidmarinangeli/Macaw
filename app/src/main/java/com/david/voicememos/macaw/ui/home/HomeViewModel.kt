@@ -10,6 +10,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 
 class HomeViewModel(private val recorder: MediaRecorder) :
     ViewModel() {
@@ -25,6 +27,17 @@ class HomeViewModel(private val recorder: MediaRecorder) :
         viewModelScope.launch(Dispatchers.IO) {
             recordings.emit(homeRepository.getRecordings(folderPath))
         }
+    }
+
+    fun sortRecordings() {
+
+        viewModelScope.launch(Dispatchers.IO) {
+            recordings.emit(
+                recordings.value.minus(recordings.value.first()).sortedBy {
+                    it.duration
+                })
+        }
+
     }
 
     fun startRecording() {

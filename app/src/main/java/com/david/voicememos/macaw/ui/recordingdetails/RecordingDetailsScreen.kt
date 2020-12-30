@@ -1,13 +1,11 @@
 package com.david.voicememos.macaw.ui.recordingdetails
 
-import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -26,8 +24,8 @@ import com.david.voicememos.macaw.ui.components.MacawSeekbar
 import com.david.voicememos.macaw.ui.components.MacawSurface
 import com.david.voicememos.macaw.ui.composebase.blue700
 import com.david.voicememos.macaw.ui.composebase.red500
+import com.david.voicememos.macaw.ui.composebase.typography
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import java.io.File
 
 
 @ExperimentalCoroutinesApi
@@ -57,12 +55,15 @@ fun RecordingDetailsScreen(
             }
             Text(
                 "Info",
-                style = MaterialTheme.typography.h4,
+                style = typography.h4,
                 modifier = Modifier.padding(top = 16.dp, end = 16.dp, start = 16.dp)
             )
-            MacawSurface(onClick = null) {
+            MacawSurface(
+                onClick = null,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)
+            ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text(text = dayAndTime, style = MaterialTheme.typography.h5)
+                    Text(text = dayAndTime, style = typography.h5)
                     Row(
                         modifier = Modifier.padding(top = 8.dp)
                     ) {
@@ -73,11 +74,11 @@ fun RecordingDetailsScreen(
                                 .align(Alignment.CenterVertically),
                             contentScale = ContentScale.FillWidth
                         )
-                        Text(text = duration, style = MaterialTheme.typography.body1)
+                        Text(text = duration, style = typography.body1)
                     }
                     Text(
                         text = "Saved in $path",
-                        style = MaterialTheme.typography.body2,
+                        style = typography.body2,
                         modifier = Modifier.padding(top = 8.dp),
                         fontStyle = FontStyle.Italic
                     )

@@ -4,23 +4,27 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.colors
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.AmbientAnimationClock
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.david.voicememos.macaw.R
 import com.david.voicememos.macaw.entities.Recording
+import com.david.voicememos.macaw.ui.components.MacawSurface
 import com.david.voicememos.macaw.ui.components.RecordButton
 import com.david.voicememos.macaw.ui.components.RecordingCard
+import com.david.voicememos.macaw.ui.composebase.typography
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
+@ExperimentalCoroutinesApi
 @ExperimentalMaterialApi
 @Composable
 fun HomeScreen(
@@ -48,7 +52,7 @@ fun HomeScreen(
                 )
                 Text(
                     text = "No results found",
-                    style = MaterialTheme.typography.body1,
+                    style = typography.body1,
                     color = colors.onSurface,
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
@@ -64,31 +68,56 @@ fun HomeScreen(
                                     Box(Modifier.height(80.dp))
                                 }
                                 recordingList.first() -> {
-                                    Box {
-                                        Image(
-                                            imageVector = vectorResource(id = R.drawable.homescreen_background),
-                                            modifier = Modifier.padding(bottom = 16.dp).clip(
-                                                shape = RoundedCornerShape(
-                                                    bottomRight = 16.dp,
-                                                    bottomLeft = 16.dp
+                                    Column {
+                                        Box {
+                                            Image(
+                                                imageVector = vectorResource(id = R.drawable.homescreen_background),
+                                                modifier = Modifier.padding(bottom = 16.dp).clip(
+                                                    shape = RoundedCornerShape(
+                                                        bottomRight = 16.dp,
+                                                        bottomLeft = 16.dp
+                                                    )
+                                                ).fillMaxWidth(),
+                                                contentScale = ContentScale.FillBounds
+                                            )
+                                            Column(
+                                                modifier = Modifier.align(Alignment.BottomStart)
+                                                    .padding(start = 32.dp, bottom = 48.dp)
+                                            ) {
+                                                Text(
+                                                    text = "Hey,",
+                                                    style = typography.h5,
+                                                    color = colors.onSurface
                                                 )
-                                            ).fillMaxWidth(),
-                                            contentScale = ContentScale.FillBounds
-                                        )
-                                        Column(
-                                            modifier = Modifier.align(Alignment.BottomStart)
-                                                .padding(start = 32.dp, bottom = 48.dp)
+                                                Text(
+                                                    text = "David",
+                                                    style = typography.h2,
+                                                    color = colors.onSurface
+                                                )
+                                            }
+                                        }
+                                        MacawSurface(
+                                            onClick =  { homeViewModel.sortRecordings() } ,
+                                            modifier = Modifier.padding(end = 16.dp, bottom = 8.dp)
+                                                .align(Alignment.End)
                                         ) {
-                                            Text(
-                                                text = "Hey,",
-                                                style = MaterialTheme.typography.h5,
-                                                color = colors.onSurface
-                                            )
-                                            Text(
-                                                text = "David",
-                                                style = MaterialTheme.typography.h2,
-                                                color = colors.onSurface
-                                            )
+                                            Row(
+                                                modifier = Modifier.padding(
+                                                    vertical = 8.dp,
+                                                    horizontal = 12.dp
+                                                )
+                                            ) {
+                                                Text(
+                                                    text = "Sort",
+                                                    style = typography.button,
+                                                    color = colors.primary,
+                                                    modifier = Modifier.padding(end = 4.dp)
+                                                )
+                                                Image(
+                                                    imageVector = vectorResource(id = R.drawable.ic_sort),
+                                                    colorFilter = ColorFilter.tint(colors.primary)
+                                                )
+                                            }
                                         }
                                     }
                                 }
@@ -112,6 +141,16 @@ fun HomeScreen(
     }
 }
 
+@Composable
+fun BottomDrawerSample() {
+    BottomDrawerLayout(
+        drawerState = rememberBottomDrawerState(BottomDrawerValue.Closed),
+        drawerContent = { Text(text = "yo") }) {
+
+    }
+}
+
+@ExperimentalCoroutinesApi
 @ExperimentalMaterialApi
 private fun onRecordPressed(
     activity: HomeActivity,
@@ -121,9 +160,9 @@ private fun onRecordPressed(
 
         val isRecording = homeViewModel.recordingState.value
 
-        if (isRecording){
+        if (isRecording) {
             homeViewModel.stopRecording()
-        }else{
+        } else {
             activity.requestAudioRecording()
         }
 
