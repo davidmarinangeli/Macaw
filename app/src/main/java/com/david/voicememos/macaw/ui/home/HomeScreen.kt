@@ -96,29 +96,9 @@ fun HomeScreen(
                                                 )
                                             }
                                         }
-                                        MacawSurface(
-                                            onClick =  { homeViewModel.sortRecordings() } ,
-                                            modifier = Modifier.padding(end = 16.dp, bottom = 8.dp)
-                                                .align(Alignment.End)
-                                        ) {
-                                            Row(
-                                                modifier = Modifier.padding(
-                                                    vertical = 8.dp,
-                                                    horizontal = 12.dp
-                                                )
-                                            ) {
-                                                Text(
-                                                    text = "Sort",
-                                                    style = typography.button,
-                                                    color = colors.primary,
-                                                    modifier = Modifier.padding(end = 4.dp)
-                                                )
-                                                Image(
-                                                    imageVector = vectorResource(id = R.drawable.ic_sort),
-                                                    colorFilter = ColorFilter.tint(colors.primary)
-                                                )
-                                            }
-                                        }
+                                        SortButton(
+                                            modifier = Modifier.align(Alignment.End),
+                                            onClick = { homeViewModel.sortRecordings() })
                                     }
                                 }
                                 else -> {
@@ -142,11 +122,28 @@ fun HomeScreen(
 }
 
 @Composable
-fun BottomDrawerSample() {
-    BottomDrawerLayout(
-        drawerState = rememberBottomDrawerState(BottomDrawerValue.Closed),
-        drawerContent = { Text(text = "yo") }) {
-
+private fun SortButton(modifier: Modifier, onClick: () -> Unit) {
+    MacawSurface(
+        onClick = onClick,
+        modifier = modifier.padding(end = 16.dp, bottom = 8.dp)
+    ) {
+        Row(
+            modifier = Modifier.padding(
+                vertical = 8.dp,
+                horizontal = 12.dp
+            )
+        ) {
+            Text(
+                text = "Sort",
+                style = typography.button,
+                color = colors.primary,
+                modifier = Modifier.padding(end = 4.dp)
+            )
+            Image(
+                imageVector = vectorResource(id = R.drawable.ic_sort),
+                colorFilter = ColorFilter.tint(colors.primary)
+            )
+        }
     }
 }
 
