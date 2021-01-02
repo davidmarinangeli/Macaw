@@ -4,19 +4,38 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/blue_500</item>
         <item name="colorPrimaryVariant">@color/blue_700</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnPrimary">@android:color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/green_200</item>
         <item name="colorSecondaryVariant">@color/green_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
     </style>
 
     <style name="Theme.Macaw.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppBottomSheetDialogTheme"
+        parent="Theme.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="AppModalStyle" parent="Theme.MaterialComponents.BottomSheetDialog">
+        <item name="android:background">@drawable/bottomsheet_background</item>
+    </style>
+
+    <style name="BottomSheetBody" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="fontFamily">@font/rflex_regular</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="BottomSheetTitle" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="fontFamily">@font/rflex_medium</item>
+        <item name="android:textSize">24sp</item>
     </style>
 
     <style name="Theme.Macaw.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

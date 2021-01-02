@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.AmbientAnimationClock
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.david.voicememos.macaw.R
@@ -21,6 +20,7 @@ import com.david.voicememos.macaw.ui.components.MacawSurface
 import com.david.voicememos.macaw.ui.components.RecordButton
 import com.david.voicememos.macaw.ui.components.RecordingCard
 import com.david.voicememos.macaw.ui.composebase.typography
+import com.david.voicememos.macaw.ui.sortmethodchooser.SortMethodListSheetFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -98,7 +98,13 @@ fun HomeScreen(
                                         }
                                         SortButton(
                                             modifier = Modifier.align(Alignment.End),
-                                            onClick = { homeViewModel.sortRecordings() })
+                                            onClick = {
+                                                val bottomSheetFragment = SortMethodListSheetFragment()
+                                                bottomSheetFragment.show(
+                                                    activity.supportFragmentManager,
+                                                    bottomSheetFragment.tag
+                                                )
+                                            })
                                     }
                                 }
                                 else -> {
