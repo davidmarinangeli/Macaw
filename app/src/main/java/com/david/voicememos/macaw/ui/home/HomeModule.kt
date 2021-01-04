@@ -7,18 +7,8 @@ import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val homeModule = module {
-    viewModel { HomeViewModel(get()) }
+    viewModel { HomeViewModel() }
     viewModel { RecordingDetailsViewModel(get()) }
 
     single { MacawPlayer(androidContext()) }
-
-    factory {
-        MediaRecorder().apply {
-            setAudioSource(MediaRecorder.AudioSource.MIC)
-            setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-            setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB)
-            setAudioEncodingBitRate(16 * 44100)
-            setAudioSamplingRate(44100)
-        }
-    }
 }

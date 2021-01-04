@@ -29,7 +29,7 @@
     </style>
 
     <style name="BottomSheetBody" parent="TextAppearance.MaterialComponents.Body1">
-        <item name="fontFamily">@font/rflex_regular</item>
+        <item name="fontFamily">@font/rflex_medium</item>
         <item name="android:textSize">16sp</item>
     </style>
 

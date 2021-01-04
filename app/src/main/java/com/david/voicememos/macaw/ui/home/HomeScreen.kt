@@ -20,7 +20,7 @@ import com.david.voicememos.macaw.ui.components.MacawSurface
 import com.david.voicememos.macaw.ui.components.RecordButton
 import com.david.voicememos.macaw.ui.components.RecordingCard
 import com.david.voicememos.macaw.ui.composebase.typography
-import com.david.voicememos.macaw.ui.sortmethodchooser.SortMethodListSheetFragment
+import com.david.voicememos.macaw.ui.sortbybottomsheet.SortMethodListSheetFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -106,6 +106,7 @@ fun HomeScreen(
                                                 )
                                             })
                                     }
+                                    RecordingCard(item, onClickListener = { onClick(item) })
                                 }
                                 else -> {
                                     RecordingCard(item, onClickListener = { onClick(item) })

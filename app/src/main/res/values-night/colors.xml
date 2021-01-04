@@ -7,5 +7,7 @@
     <color name="green_500">#FF26C485</color>
     <color name="green_700">#FF285943</color>
     <color name="black">#FF000000</color>
+    <color name="bottomSheetKnob">#41FFFFFF</color>
     <color name="surface">#252525</color>
+    <color name="onSurface">@android:color/white</color>
 </resources>

@@ -10,12 +10,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import java.io.IOException
-import java.text.SimpleDateFormat
-import java.util.*
 
-class HomeViewModel(private val recorder: MediaRecorder) :
+class HomeViewModel :
     ViewModel() {
 
+    var recorder: MediaRecorder? = null
     var recordings = MutableStateFlow<List<Recording>>(emptyList())
     val recordingState = MutableStateFlow(false)
     var homeRepository: HomeRepository = HomeRepository()
@@ -29,12 +28,22 @@ class HomeViewModel(private val recorder: MediaRecorder) :
         }
     }
 
-    fun sortRecordings() {
+    fun sortRecordingsByDuration() {
 
         viewModelScope.launch(Dispatchers.IO) {
             recordings.emit(
-                recordings.value.minus(recordings.value.first()).sortedBy {
+                recordings.value.sortedBy {
                     it.duration
+                })
+        }
+
+    }
+
+    fun sortRecordingsByDate() {
+        viewModelScope.launch(Dispatchers.IO) {
+            recordings.emit(
+                recordings.value.sortedBy {
+                    it.date
                 })
         }
 
@@ -44,28 +53,35 @@ class HomeViewModel(private val recorder: MediaRecorder) :
 
         val fileName = generateRecordingName(folderPath)
 
-        recorder.setOutputFile(fileName)
+        recorder = MediaRecorder().apply {
+            setAudioSource(MediaRecorder.AudioSource.MIC)
+            setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+            setOutputFile(fileName)
+            setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB)
+            setAudioEncodingBitRate(16 * 44100)
+            setAudioSamplingRate(44100)
+        }
 
         try {
-            recorder.prepare()
+            recorder?.prepare()
+            recorder?.start()
+            viewModelScope.launch {
+                recordingState.emit(true)
+            }
         } catch (e: IOException) {
             viewModelScope.launch {
                 recordingState.emit(false)
             }
         }
-
-        recorder.start()
-        viewModelScope.launch {
-            recordingState.emit(true)
-        }
     }
 
     fun stopRecording() {
-        recorder.apply {
+        recorder?.apply {
             stop()
             reset()
             release()
         }
+        recorder = null
         viewModelScope.launch {
             recordingState.emit(false)
         }

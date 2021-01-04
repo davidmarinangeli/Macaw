@@ -20,8 +20,8 @@ fun RecordingCard(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = recording.dayAndTime, style = MaterialTheme.typography.h6)
-            Text(text = recording.date, style = MaterialTheme.typography.body1)
+            Text(text = recording.readableDayTime, style = MaterialTheme.typography.h6)
+            Text(text = recording.readableDate, style = MaterialTheme.typography.body1)
             Text(
                 text = recording.duration,
                 style = MaterialTheme.typography.body1,

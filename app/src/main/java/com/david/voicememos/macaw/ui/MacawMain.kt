@@ -4,7 +4,6 @@ import android.net.Uri
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigate
@@ -39,7 +38,7 @@ fun MacawMain(
                 activity = activity,
                 onClick = { item ->
                     navController.navigate(
-                        "${Screen.RecordingDetails.route}/${item.dayAndTime}/${item.duration}/${item.path}"
+                        "${Screen.RecordingDetails.route}/${item.readableDayTime}/${item.duration}/${item.path}"
                     )
                 },
                 recordingList = recordingList.toMutableList()

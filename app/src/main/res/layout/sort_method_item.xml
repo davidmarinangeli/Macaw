@@ -1,13 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.textview.MaterialTextView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/text"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sortMethodContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
-    android:paddingLeft="@dimen/list_item_spacing"
-    android:paddingTop="@dimen/list_item_spacing_half"
-    android:paddingRight="@dimen/list_item_spacing"
-    android:paddingBottom="@dimen/list_item_spacing_half"
-    android:textAppearance="@style/BottomSheetBody"
-    tools:text="Hello" />
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="horizontal">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/sortMethodText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginHorizontal="@dimen/list_item_spacing"
+        android:layout_marginVertical="@dimen/list_item_spacing"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_toStartOf="@+id/sortMethodImage"
+        android:textAppearance="@style/BottomSheetBody"
+        android:textColor="@color/onSurface"
+        tools:text="Hello" />
+
+    <ImageView
+        android:id="@+id/sortMethodImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:tint="@color/onSurface"
+        android:src="@drawable/ic_baseline_access_time_24" />
+
+</RelativeLayout>

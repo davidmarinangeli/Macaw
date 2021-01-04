@@ -2,8 +2,7 @@ package com.david.voicememos.macaw.entities
 
 import android.media.MediaMetadataRetriever
 import android.os.Parcelable
-import androidx.compose.runtime.remember
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -12,8 +11,9 @@ import java.util.concurrent.TimeUnit
 @Parcelize
 data class Recording(
     val duration: String,
-    val date: String,
-    val dayAndTime: String,
+    val readableDate: String,
+    val readableDayTime: String,
+    val date: Date,
     val path: String
 ) : Parcelable
 
@@ -31,13 +31,13 @@ fun convertFilesToRecordings(file: List<File>): List<Recording> {
         val timeDuration = convertDurationToString(duration.toInt())
 
         return@map Recording(
-            date = "${calendar.get(Calendar.DAY_OF_MONTH)} ${
+            readableDate = "${calendar.get(Calendar.DAY_OF_MONTH)} ${
                 SimpleDateFormat(
                     "MMM",
                     Locale.getDefault()
                 ).format(calendar.time)
             }",
-            dayAndTime = "${
+            readableDayTime = "${
                 SimpleDateFormat(
                     "EEEE",
                     Locale.getDefault()
@@ -48,13 +48,10 @@ fun convertFilesToRecordings(file: List<File>): List<Recording> {
                 calendar.get(Calendar.MINUTE)
             ),
             duration = timeDuration,
-            path = it.path
+            path = it.path,
+            date = Date(it.lastModified())
         )
     }.toMutableList()
-
-    if (recordingList.isNotEmpty()) {
-        recordingList.add(0, Recording("", "", "", ""))
-    }
 
     mmr.release()
     return recordingList

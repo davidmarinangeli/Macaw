@@ -16,6 +16,7 @@ import com.david.voicememos.macaw.ui.recordingdetails.RecordingDetailsViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
+import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.context.startKoin
 
 
@@ -23,8 +24,8 @@ import org.koin.core.context.startKoin
 @ExperimentalMaterialApi
 class HomeActivity : AppCompatActivity() {
 
-    private val homeViewModel by inject<HomeViewModel>()
-    private val recordingDetailsViewModel by inject<RecordingDetailsViewModel>()
+    private val homeViewModel by viewModel<HomeViewModel>()
+    private val recordingDetailsViewModel by viewModel<RecordingDetailsViewModel>()
 
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()

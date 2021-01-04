@@ -7,6 +7,8 @@
     <color name="green_500">#FF26C485</color>
     <color name="green_700">#FF285943</color>
     <color name="black">#FF000000</color>
-    <color name="bottomSheetKnob">#80000000</color>
+    <color name="dividerGray">#1F979797</color>
+    <color name="bottomSheetKnob">#41000000</color>
     <color name="surface">@android:color/white</color>
+    <color name="onSurface">@android:color/black</color>
 </resources>
