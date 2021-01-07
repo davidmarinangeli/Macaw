@@ -2,6 +2,7 @@ package com.david.voicememos.macaw.ui.home
 
 import android.Manifest
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,9 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.Surface
+import androidx.compose.ui.hapticfeedback.HapticFeedback
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.AmbientHapticFeedback
 import androidx.compose.ui.platform.setContent
 import com.david.voicememos.macaw.ui.MacawMain
 import com.david.voicememos.macaw.ui.composebase.MacawTheme
@@ -35,7 +39,6 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContent {
             MacawTheme {
                 Surface(color = colors.background) {

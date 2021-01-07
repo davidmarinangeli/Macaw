@@ -24,7 +24,7 @@ import com.david.voicememos.macaw.ui.composebase.red800
 @Composable
 fun RecordButton(modifier: Modifier, isRecording: Boolean, onClickListener: () -> Unit) {
     val gradientBackground = Brush.horizontalGradient(
-        colors = listOf(red800,red700),
+        colors = listOf(red800, red700),
         startX = 0f,
         endX = 128f
     )
@@ -40,7 +40,7 @@ fun RecordButton(modifier: Modifier, isRecording: Boolean, onClickListener: () -
         if (isRecording) {
             Image(
                 colorFilter = ColorFilter.tint(Color.White),
-                imageVector=vectorResource(id = R.drawable.ic_baseline_stop_24),
+                imageVector = vectorResource(id = R.drawable.ic_baseline_stop_24),
                 alignment = Alignment.Center,
                 modifier = Modifier.preferredWidth(42.dp),
                 contentScale = ContentScale.FillWidth

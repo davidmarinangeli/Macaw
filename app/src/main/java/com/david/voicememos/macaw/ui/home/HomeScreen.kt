@@ -11,7 +11,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.hapticfeedback.HapticFeedback
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.AmbientHapticFeedback
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.david.voicememos.macaw.R
@@ -35,6 +38,7 @@ fun HomeScreen(
 ) {
 
     val recordingState = homeViewModel.recordingState.collectAsState()
+    val ambientHaptic = AmbientHapticFeedback.current
 
     Box(
         modifier = Modifier.fillMaxWidth().fillMaxHeight()
@@ -99,7 +103,8 @@ fun HomeScreen(
                                         SortButton(
                                             modifier = Modifier.align(Alignment.End),
                                             onClick = {
-                                                val bottomSheetFragment = SortMethodListSheetFragment()
+                                                val bottomSheetFragment =
+                                                    SortMethodListSheetFragment()
                                                 bottomSheetFragment.show(
                                                     activity.supportFragmentManager,
                                                     bottomSheetFragment.tag
@@ -123,6 +128,7 @@ fun HomeScreen(
             onClickListener = onRecordPressed(
                 activity = activity,
                 homeViewModel = homeViewModel,
+                ambient = ambientHaptic
             )
         )
     }
@@ -158,11 +164,13 @@ private fun SortButton(modifier: Modifier, onClick: () -> Unit) {
 @ExperimentalMaterialApi
 private fun onRecordPressed(
     activity: HomeActivity,
-    homeViewModel: HomeViewModel
+    homeViewModel: HomeViewModel,
+    ambient: HapticFeedback
 ): () -> Unit {
     return {
-
         val isRecording = homeViewModel.recordingState.value
+
+        ambient.performHapticFeedback(HapticFeedbackType.LongPress)
 
         if (isRecording) {
             homeViewModel.stopRecording()
