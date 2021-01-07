@@ -15,7 +15,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.AmbientHapticFeedback
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
@@ -38,19 +40,26 @@ fun RecordingDetailsScreen(
     viewModel: RecordingDetailsViewModel
 ) {
     val state by viewModel.middlePlayer.collectAsState()
+    val ambientHaptic = AmbientHapticFeedback.current
 
-    Box(modifier = Modifier.fillMaxHeight().fillMaxWidth()) {
+    Box(modifier = Modifier
+        .fillMaxHeight()
+        .fillMaxWidth()) {
         Column {
             Box(
                 contentAlignment = Alignment.BottomStart,
-                modifier = Modifier.clip(
-                    shape = RoundedCornerShape(
-                        bottomRight = 32.dp,
-                        bottomLeft = 32.dp
+                modifier = Modifier
+                    .clip(
+                        shape = RoundedCornerShape(
+                            bottomRight = 32.dp,
+                            bottomLeft = 32.dp
+                        )
                     )
-                ).fillMaxWidth().preferredHeight(180.dp).background(
-                    Brush.horizontalGradient(listOf(blue700, colors.primary), 0f, 500f)
-                )
+                    .fillMaxWidth()
+                    .preferredHeight(180.dp)
+                    .background(
+                        Brush.horizontalGradient(listOf(blue700, colors.primary), 0f, 500f)
+                    )
             ) {
             }
             Text(
@@ -60,7 +69,9 @@ fun RecordingDetailsScreen(
             )
             MacawSurface(
                 onClick = null,
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(text = dayAndTime, style = typography.h5)
@@ -70,7 +81,9 @@ fun RecordingDetailsScreen(
                         Image(
                             imageVector = vectorResource(id = R.drawable.ic_baseline_manual_record_24),
                             colorFilter = ColorFilter.tint(red500),
-                            modifier = Modifier.padding(4.dp).preferredWidth(12.dp)
+                            modifier = Modifier
+                                .padding(4.dp)
+                                .preferredWidth(12.dp)
                                 .align(Alignment.CenterVertically),
                             contentScale = ContentScale.FillWidth
                         )
@@ -86,7 +99,9 @@ fun RecordingDetailsScreen(
             }
         }
         Column(
-            modifier = Modifier.align(Alignment.BottomCenter).padding(24.dp)
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(24.dp)
         ) {
             MacawSeekbar(
                 currentTime = state.currentPosition, duration = state.duration
@@ -97,8 +112,12 @@ fun RecordingDetailsScreen(
                 horizontalArrangement = Arrangement.Center
             ) {
                 FloatingActionButton(
-                    onClick = { viewModel.rewindTenSeconds() },
-                    modifier = Modifier.padding(horizontal = 32.dp)
+                    onClick = {
+                        ambientHaptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                        viewModel.rewindTenSeconds()
+                    },
+                    modifier = Modifier
+                        .padding(horizontal = 32.dp)
                         .defaultMinSizeConstraints(minWidth = 38.dp, minHeight = 38.dp),
                     backgroundColor = colors.secondaryVariant
                 ) {
@@ -110,6 +129,8 @@ fun RecordingDetailsScreen(
                 }
                 FloatingActionButton(
                     onClick = {
+                        ambientHaptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+
                         if (state.isPlaying) {
                             viewModel.pauseMedia()
                         } else {
@@ -132,8 +153,12 @@ fun RecordingDetailsScreen(
                     )
                 }
                 FloatingActionButton(
-                    onClick = { viewModel.forwardTenSeconds() },
-                    modifier = Modifier.padding(horizontal = 32.dp)
+                    onClick = {
+                        viewModel.forwardTenSeconds()
+                        ambientHaptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                    },
+                    modifier = Modifier
+                        .padding(horizontal = 32.dp)
                         .defaultMinSizeConstraints(minWidth = 38.dp, minHeight = 38.dp),
                     backgroundColor = colors.secondaryVariant
                 ) {
