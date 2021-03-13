@@ -1,9 +1,13 @@
 package com.david.voicememos.macaw.ui.components
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.preferredWidth
+import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Surface
@@ -14,6 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -21,6 +26,7 @@ import com.david.voicememos.macaw.R
 import com.david.voicememos.macaw.ui.composebase.red700
 import com.david.voicememos.macaw.ui.composebase.red800
 
+@ExperimentalAnimationApi
 @Composable
 fun RecordButton(modifier: Modifier, isRecording: Boolean, onClickListener: () -> Unit) {
     val gradientBackground = Brush.horizontalGradient(
@@ -37,13 +43,19 @@ fun RecordButton(modifier: Modifier, isRecording: Boolean, onClickListener: () -
     }
 
     Surface(color = Color.Transparent, modifier = componentModifier) {
-        if (isRecording) {
+        AnimatedVisibility(
+            visible = isRecording,
+            enter = fadeIn(initialAlpha = 0.3f),
+            exit = fadeOut()
+
+        ) {
             Image(
                 colorFilter = ColorFilter.tint(Color.White),
-                imageVector = vectorResource(id = R.drawable.ic_baseline_stop_24),
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_baseline_stop_24),
                 alignment = Alignment.Center,
-                modifier = Modifier.preferredWidth(42.dp),
-                contentScale = ContentScale.FillWidth
+                modifier = Modifier.requiredWidth(42.dp),
+                contentScale = ContentScale.FillWidth,
+                contentDescription = null
             )
         }
     }

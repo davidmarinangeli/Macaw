@@ -15,12 +15,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.AmbientHapticFeedback
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
+import androidx.ui.tooling.preview.Preview
 import com.david.voicememos.macaw.R
 import com.david.voicememos.macaw.ui.components.MacawSeekbar
 import com.david.voicememos.macaw.ui.components.MacawSurface
@@ -40,31 +41,30 @@ fun RecordingDetailsScreen(
     viewModel: RecordingDetailsViewModel
 ) {
     val state by viewModel.middlePlayer.collectAsState()
-    val ambientHaptic = AmbientHapticFeedback.current
 
-    Box(modifier = Modifier
-        .fillMaxHeight()
-        .fillMaxWidth()) {
+    Box(
+        modifier = Modifier
+            .fillMaxHeight()
+            .fillMaxWidth()
+    ) {
         Column {
             Box(
-                contentAlignment = Alignment.BottomStart,
                 modifier = Modifier
                     .clip(
                         shape = RoundedCornerShape(
-                            bottomRight = 32.dp,
-                            bottomLeft = 32.dp
+                            bottomEnd = 32.dp,
+                            bottomStart = 32.dp
                         )
                     )
                     .fillMaxWidth()
-                    .preferredHeight(180.dp)
+                    .requiredHeight(180.dp)
                     .background(
                         Brush.horizontalGradient(listOf(blue700, colors.primary), 0f, 500f)
                     )
-            ) {
-            }
+            )
             Text(
                 "Info",
-                style = typography.h4,
+                style = typography.h5,
                 modifier = Modifier.padding(top = 16.dp, end = 16.dp, start = 16.dp)
             )
             MacawSurface(
@@ -74,18 +74,19 @@ fun RecordingDetailsScreen(
                     .padding(horizontal = 16.dp, vertical = 8.dp)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text(text = dayAndTime, style = typography.h5)
+                    Text(text = dayAndTime, style = typography.h6)
                     Row(
                         modifier = Modifier.padding(top = 8.dp)
                     ) {
                         Image(
-                            imageVector = vectorResource(id = R.drawable.ic_baseline_manual_record_24),
+                            imageVector = ImageVector.vectorResource(id = R.drawable.ic_baseline_manual_record_24),
                             colorFilter = ColorFilter.tint(red500),
                             modifier = Modifier
                                 .padding(4.dp)
-                                .preferredWidth(12.dp)
+                                .requiredWidth(12.dp)
                                 .align(Alignment.CenterVertically),
-                            contentScale = ContentScale.FillWidth
+                            contentScale = ContentScale.FillWidth,
+                            contentDescription = null
                         )
                         Text(text = duration, style = typography.body1)
                     }
@@ -101,7 +102,7 @@ fun RecordingDetailsScreen(
         Column(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(24.dp)
+                .padding(16.dp)
         ) {
             MacawSeekbar(
                 currentTime = state.currentPosition, duration = state.duration
@@ -113,23 +114,24 @@ fun RecordingDetailsScreen(
             ) {
                 FloatingActionButton(
                     onClick = {
-                        ambientHaptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                        // TODO: haptic feedback
                         viewModel.rewindTenSeconds()
                     },
                     modifier = Modifier
                         .padding(horizontal = 32.dp)
-                        .defaultMinSizeConstraints(minWidth = 38.dp, minHeight = 38.dp),
+                        .defaultMinSize(minWidth = 38.dp, minHeight = 38.dp),
                     backgroundColor = colors.secondaryVariant
                 ) {
                     Image(
                         colorFilter = ColorFilter.tint(Color.White),
-                        imageVector = vectorResource(id = R.drawable.ic_baseline_replay_10_24),
-                        contentScale = ContentScale.FillWidth
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_baseline_replay_10_24),
+                        contentScale = ContentScale.FillWidth,
+                        contentDescription = null
                     )
                 }
                 FloatingActionButton(
                     onClick = {
-                        ambientHaptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                        // TODO: haptic feedback
 
                         if (state.isPlaying) {
                             viewModel.pauseMedia()
@@ -139,33 +141,35 @@ fun RecordingDetailsScreen(
                     },
                     backgroundColor = colors.secondary,
                     modifier = Modifier
-                        .defaultMinSizeConstraints(minWidth = 64.dp, minHeight = 64.dp),
+                        .defaultMinSize(minWidth = 64.dp, minHeight = 64.dp),
                 ) {
                     Image(
                         colorFilter = ColorFilter.tint(Color.White),
                         imageVector = if (state.isPlaying) {
-                            vectorResource(id = R.drawable.ic_baseline_pause_24)
+                            ImageVector.vectorResource(id = R.drawable.ic_baseline_pause_24)
                         } else {
-                            vectorResource(id = R.drawable.ic_baseline_play_arrow_24)
+                            ImageVector.vectorResource(id = R.drawable.ic_baseline_play_arrow_24)
                         },
-                        modifier = Modifier.preferredWidth(48.dp),
-                        contentScale = ContentScale.FillWidth
+                        modifier = Modifier.requiredWidth(48.dp),
+                        contentScale = ContentScale.FillWidth,
+                        contentDescription = null
                     )
                 }
                 FloatingActionButton(
                     onClick = {
                         viewModel.forwardTenSeconds()
-                        ambientHaptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                        // TODO: haptic feedback
                     },
                     modifier = Modifier
                         .padding(horizontal = 32.dp)
-                        .defaultMinSizeConstraints(minWidth = 38.dp, minHeight = 38.dp),
+                        .defaultMinSize(minWidth = 38.dp, minHeight = 38.dp),
                     backgroundColor = colors.secondaryVariant
                 ) {
                     Image(
                         colorFilter = ColorFilter.tint(Color.White),
-                        imageVector = vectorResource(id = R.drawable.ic_baseline_forward_10_24),
-                        contentScale = ContentScale.FillWidth
+                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_baseline_forward_10_24),
+                        contentScale = ContentScale.FillWidth,
+                        contentDescription = null
                     )
                 }
             }

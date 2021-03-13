@@ -6,11 +6,11 @@ import androidx.compose.ui.text.font.*
 import androidx.compose.ui.unit.sp
 import com.david.voicememos.macaw.R
 
-val RFlex = fontFamily(
-    font(R.font.rflex_bold, FontWeight.Bold),
-    font(R.font.rflex_regular, FontWeight.Normal),
-    font(R.font.rflex_regular_italic, FontWeight.Normal, FontStyle.Italic),
-    font(R.font.rflex_medium, FontWeight.Medium),
+val RFlex = FontFamily(
+    Font(R.font.rflex_bold, FontWeight.Bold),
+    Font(R.font.rflex_regular, FontWeight.Normal),
+    Font(R.font.rflex_regular_italic, FontWeight.Normal, FontStyle.Italic),
+    Font(R.font.rflex_medium, FontWeight.Medium),
 )
 
 // Set of Material typography styles to start with

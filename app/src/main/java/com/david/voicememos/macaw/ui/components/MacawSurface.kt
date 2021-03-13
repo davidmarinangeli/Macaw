@@ -1,12 +1,9 @@
 package com.david.voicememos.macaw.ui.components
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Providers
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
@@ -31,10 +28,6 @@ fun MacawSurface(
         modifier = modifier.clip(shapes.medium)
             .let { if (onClick != null) it.clickable(onClick = onClick) else it }
     ) {
-        Providers(
-            AmbientContentColor provides contentColorFor(color),
-            AmbientAbsoluteElevation provides AmbientAbsoluteElevation.current,
-            content = content
-        )
+        content()
     }
 }
