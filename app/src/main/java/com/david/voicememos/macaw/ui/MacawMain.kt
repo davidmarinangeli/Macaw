@@ -61,7 +61,7 @@ fun MacawMain(
                 backStackEntry.arguments?.getString("duration") ?: "",
                 backStackEntry.arguments?.getString("path") ?: "",
                 recordingDetailsViewModel
-            )
+            ) { navController.popBackStack() }
         }
     }
 }

@@ -48,13 +48,6 @@ fun HomeScreen(
 ) {
 
     val recordingState = homeViewModel.recordingState.collectAsState()
-    val listState = rememberLazyListState()
-
-    val showButton = remember {
-        derivedStateOf {
-            listState.firstVisibleItemScrollOffset < 1
-        }
-    }
 
     Box(
         modifier = Modifier
@@ -81,7 +74,7 @@ fun HomeScreen(
                 )
             }
         } else {
-            LazyColumn(state = listState) {
+            LazyColumn {
                 itemsIndexed(recordingList) { index, recording ->
                     when (recording) {
                         recordingList.last() -> {
@@ -121,23 +114,19 @@ fun HomeScreen(
                                             color = colors.onSurface
                                         )
                                     }
-                                    androidx.compose.animation.AnimatedVisibility(
-                                        visible = showButton.value,
+                                    SortButton(
                                         modifier = Modifier
                                             .align(Alignment.BottomEnd)
-                                            .padding(end = 16.dp, bottom = 32.dp)
-                                    ) {
-                                        SortButton(
-                                            modifier = Modifier,
-                                            onClick = {
-                                                val bottomSheetFragment =
-                                                    SortMethodListSheetFragment()
-                                                bottomSheetFragment.show(
-                                                    activity.supportFragmentManager,
-                                                    bottomSheetFragment.tag
-                                                )
-                                            })
-                                    }
+                                            .padding(end = 16.dp, bottom = 32.dp),
+                                        onClick = {
+                                            val bottomSheetFragment =
+                                                SortMethodListSheetFragment()
+                                            bottomSheetFragment.show(
+                                                activity.supportFragmentManager,
+                                                bottomSheetFragment.tag
+                                            )
+                                        })
+
                                 }
                             }
                             RecordingCard(recording, onClickListener = { onClick(recording) })

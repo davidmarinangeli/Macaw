@@ -14,3 +14,7 @@ val red800 = Color(0xFFA72541)
 val red700 = Color(0xFFBA2748)
 val red500 = Color(0xFFCE2D4F)
 val surfaceWhite = Color(0xFFeeeeee)
+
+val grey700 = Color(0xFF5C5C5C)
+
+val black = Color(0xFF1A1A1A)

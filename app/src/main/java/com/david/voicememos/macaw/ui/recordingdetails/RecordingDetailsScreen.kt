@@ -2,10 +2,12 @@ package com.david.voicememos.macaw.ui.recordingdetails
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -25,9 +27,7 @@ import androidx.ui.tooling.preview.Preview
 import com.david.voicememos.macaw.R
 import com.david.voicememos.macaw.ui.components.MacawSeekbar
 import com.david.voicememos.macaw.ui.components.MacawSurface
-import com.david.voicememos.macaw.ui.composebase.blue700
-import com.david.voicememos.macaw.ui.composebase.red500
-import com.david.voicememos.macaw.ui.composebase.typography
+import com.david.voicememos.macaw.ui.composebase.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -38,7 +38,8 @@ fun RecordingDetailsScreen(
     dayAndTime: String,
     duration: String,
     path: String,
-    viewModel: RecordingDetailsViewModel
+    viewModel: RecordingDetailsViewModel,
+    onBackPressed: () -> Unit
 ) {
     val state by viewModel.middlePlayer.collectAsState()
 
@@ -50,22 +51,45 @@ fun RecordingDetailsScreen(
         Column {
             Box(
                 modifier = Modifier
-                    .clip(
-                        shape = RoundedCornerShape(
-                            bottomEnd = 32.dp,
-                            bottomStart = 32.dp
-                        )
-                    )
                     .fillMaxWidth()
-                    .requiredHeight(180.dp)
+                    .requiredHeight(54.dp)
                     .background(
                         Brush.horizontalGradient(listOf(blue700, colors.primary), 0f, 500f)
                     )
+            ) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(id = R.drawable.round_arrow_back_24),
+                    tint = black,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .align(Alignment.CenterStart)
+                        .clickable(onClick = onBackPressed)
+                )
+                Text(
+                    text = dayAndTime,
+                    style = typography.h6,
+                    color = black,
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Brush.horizontalGradient(listOf(blue700, colors.primary), 0f, 500f))
+                    .clip(
+                        RoundedCornerShape(
+                            topEnd = 32.dp,
+                            topStart = 32.dp
+                        )
+                    )
+                    .requiredHeight(32.dp)
+                    .background(colors.surface)
             )
             Text(
                 "Info",
                 style = typography.h5,
-                modifier = Modifier.padding(top = 16.dp, end = 16.dp, start = 16.dp)
+                modifier = Modifier.padding(end = 16.dp, start = 16.dp)
             )
             MacawSurface(
                 onClick = null,
@@ -74,7 +98,9 @@ fun RecordingDetailsScreen(
                     .padding(horizontal = 16.dp, vertical = 8.dp)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text(text = dayAndTime, style = typography.h6)
+                    Text(
+                        text = dayAndTime, style = typography.h6
+                    )
                     Row(
                         modifier = Modifier.padding(top = 8.dp)
                     ) {
@@ -92,6 +118,7 @@ fun RecordingDetailsScreen(
                     }
                     Text(
                         text = "Saved in $path",
+                        color = grey700,
                         style = typography.body2,
                         modifier = Modifier.padding(top = 8.dp),
                         fontStyle = FontStyle.Italic
