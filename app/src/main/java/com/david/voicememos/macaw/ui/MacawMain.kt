@@ -1,6 +1,7 @@
 package com.david.voicememos.macaw.ui
 
 import android.net.Uri
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -18,6 +19,7 @@ import com.david.voicememos.macaw.ui.recordingdetails.RecordingDetailsViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.io.File
 
+@ExperimentalAnimationApi
 @ExperimentalCoroutinesApi
 @ExperimentalMaterialApi
 @Composable

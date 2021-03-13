@@ -2,26 +2,18 @@ package com.david.voicememos.macaw.ui.home
 
 import android.Manifest
 import android.os.Bundle
-import android.util.Log
+import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.Surface
-import androidx.compose.ui.hapticfeedback.HapticFeedback
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.AmbientHapticFeedback
-import androidx.compose.ui.platform.setContent
 import com.david.voicememos.macaw.ui.MacawMain
 import com.david.voicememos.macaw.ui.composebase.MacawTheme
 import com.david.voicememos.macaw.ui.recordingdetails.RecordingDetailsViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.koin.android.ext.android.inject
-import org.koin.android.ext.koin.androidContext
 import org.koin.android.viewmodel.ext.android.viewModel
-import org.koin.core.context.startKoin
 
 
 @ExperimentalCoroutinesApi
@@ -37,6 +29,7 @@ class HomeActivity : AppCompatActivity() {
         if (granted) startRecording()
     }
 
+    @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

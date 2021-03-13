@@ -1,32 +1,42 @@
 package com.david.voicememos.macaw.ui.home
 
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme.colors
-import androidx.compose.runtime.*
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.hapticfeedback.HapticFeedback
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.AmbientHapticFeedback
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.david.voicememos.macaw.R
 import com.david.voicememos.macaw.entities.Recording
-import com.david.voicememos.macaw.ui.components.MacawSurface
 import com.david.voicememos.macaw.ui.components.RecordButton
 import com.david.voicememos.macaw.ui.components.RecordingCard
+import com.david.voicememos.macaw.ui.composebase.shapes
+import com.david.voicememos.macaw.ui.composebase.surfaceWhite
 import com.david.voicememos.macaw.ui.composebase.typography
 import com.david.voicememos.macaw.ui.sortbybottomsheet.SortMethodListSheetFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
+@ExperimentalAnimationApi
 @ExperimentalCoroutinesApi
 @ExperimentalMaterialApi
 @Composable
@@ -38,10 +48,18 @@ fun HomeScreen(
 ) {
 
     val recordingState = homeViewModel.recordingState.collectAsState()
-    val ambientHaptic = AmbientHapticFeedback.current
+    val listState = rememberLazyListState()
+
+    val showButton = remember {
+        derivedStateOf {
+            listState.firstVisibleItemScrollOffset < 1
+        }
+    }
 
     Box(
-        modifier = Modifier.fillMaxWidth().fillMaxHeight()
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
     ) {
         if (recordingList.isEmpty()) {
             Column(
@@ -50,9 +68,10 @@ fun HomeScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(
-                    imageVector = vectorResource(id = R.drawable.ic_no_results),
+                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_no_results),
                     modifier = Modifier.padding(horizontal = 32.dp),
-                    contentScale = ContentScale.FillWidth
+                    contentScale = ContentScale.FillWidth,
+                    contentDescription = null
                 )
                 Text(
                     text = "No results found",
@@ -62,46 +81,54 @@ fun HomeScreen(
                 )
             }
         } else {
-            Column {
-                LazyColumn {
-                    items(items = recordingList,
-                        itemContent = { item ->
-                            when (item) {
-                                recordingList.last() -> {
-                                    RecordingCard(item, onClickListener = { onClick(item) })
-                                    Box(Modifier.height(80.dp))
-                                }
-                                recordingList.first() -> {
-                                    Column {
-                                        Box {
-                                            Image(
-                                                imageVector = vectorResource(id = R.drawable.homescreen_background),
-                                                modifier = Modifier.padding(bottom = 16.dp).clip(
-                                                    shape = RoundedCornerShape(
-                                                        bottomRight = 16.dp,
-                                                        bottomLeft = 16.dp
-                                                    )
-                                                ).fillMaxWidth(),
-                                                contentScale = ContentScale.FillBounds
+            LazyColumn(state = listState) {
+                itemsIndexed(recordingList) { index, recording ->
+                    when (recording) {
+                        recordingList.last() -> {
+                            RecordingCard(recording, onClickListener = { onClick(recording) })
+                            Box(Modifier.height(80.dp))
+                        }
+                        recordingList.first() -> {
+                            Column {
+                                Box {
+                                    Image(
+                                        imageVector = ImageVector.vectorResource(id = R.drawable.homescreen_background),
+                                        contentDescription = null,
+                                        modifier = Modifier
+                                            .padding(bottom = 16.dp)
+                                            .clip(
+                                                shape = RoundedCornerShape(
+                                                    bottomEnd = 16.dp,
+                                                    bottomStart = 16.dp,
+                                                )
                                             )
-                                            Column(
-                                                modifier = Modifier.align(Alignment.BottomStart)
-                                                    .padding(start = 32.dp, bottom = 48.dp)
-                                            ) {
-                                                Text(
-                                                    text = "Hey,",
-                                                    style = typography.h5,
-                                                    color = colors.onSurface
-                                                )
-                                                Text(
-                                                    text = "David",
-                                                    style = typography.h2,
-                                                    color = colors.onSurface
-                                                )
-                                            }
-                                        }
+                                            .fillMaxWidth(),
+                                        contentScale = ContentScale.FillBounds
+                                    )
+                                    Column(
+                                        modifier = Modifier
+                                            .align(Alignment.BottomStart)
+                                            .padding(start = 32.dp, bottom = 64.dp)
+                                    ) {
+                                        Text(
+                                            text = "Hey,",
+                                            style = typography.h5,
+                                            color = colors.onSurface
+                                        )
+                                        Text(
+                                            text = "David",
+                                            style = typography.h2,
+                                            color = colors.onSurface
+                                        )
+                                    }
+                                    androidx.compose.animation.AnimatedVisibility(
+                                        visible = showButton.value,
+                                        modifier = Modifier
+                                            .align(Alignment.BottomEnd)
+                                            .padding(end = 16.dp, bottom = 32.dp)
+                                    ) {
                                         SortButton(
-                                            modifier = Modifier.align(Alignment.End),
+                                            modifier = Modifier,
                                             onClick = {
                                                 val bottomSheetFragment =
                                                     SortMethodListSheetFragment()
@@ -111,24 +138,26 @@ fun HomeScreen(
                                                 )
                                             })
                                     }
-                                    RecordingCard(item, onClickListener = { onClick(item) })
-                                }
-                                else -> {
-                                    RecordingCard(item, onClickListener = { onClick(item) })
                                 }
                             }
-                        })
+                            RecordingCard(recording, onClickListener = { onClick(recording) })
+                        }
+                        else -> {
+                            RecordingCard(recording, onClickListener = { onClick(recording) })
+                        }
+                    }
                 }
             }
         }
 
         RecordButton(
-            modifier = Modifier.padding(16.dp).align(Alignment.BottomCenter),
+            modifier = Modifier
+                .padding(16.dp)
+                .align(Alignment.BottomCenter),
             isRecording = recordingState.value,
             onClickListener = onRecordPressed(
                 activity = activity,
-                homeViewModel = homeViewModel,
-                ambient = ambientHaptic
+                homeViewModel = homeViewModel
             )
         )
     }
@@ -136,9 +165,16 @@ fun HomeScreen(
 
 @Composable
 private fun SortButton(modifier: Modifier, onClick: () -> Unit) {
-    MacawSurface(
-        onClick = onClick,
-        modifier = modifier.padding(end = 16.dp, bottom = 8.dp)
+    Surface(
+        elevation = 2.dp,
+        color = if (colors.isLight) {
+            surfaceWhite
+        } else {
+            colors.surface
+        },
+        modifier = modifier
+            .clip(shapes.small)
+            .clickable(onClick = onClick)
     ) {
         Row(
             modifier = Modifier.padding(
@@ -153,8 +189,9 @@ private fun SortButton(modifier: Modifier, onClick: () -> Unit) {
                 modifier = Modifier.padding(end = 4.dp)
             )
             Image(
-                imageVector = vectorResource(id = R.drawable.ic_sort),
-                colorFilter = ColorFilter.tint(colors.primary)
+                imageVector = ImageVector.vectorResource(id = R.drawable.ic_sort),
+                colorFilter = ColorFilter.tint(colors.primary),
+                contentDescription = null
             )
         }
     }
@@ -164,13 +201,12 @@ private fun SortButton(modifier: Modifier, onClick: () -> Unit) {
 @ExperimentalMaterialApi
 private fun onRecordPressed(
     activity: HomeActivity,
-    homeViewModel: HomeViewModel,
-    ambient: HapticFeedback
+    homeViewModel: HomeViewModel
 ): () -> Unit {
     return {
         val isRecording = homeViewModel.recordingState.value
 
-        ambient.performHapticFeedback(HapticFeedbackType.LongPress)
+        // haptic feedback
 
         if (isRecording) {
             homeViewModel.stopRecording()
